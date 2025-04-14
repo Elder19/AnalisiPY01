@@ -24,7 +24,7 @@ class MazeGenerator:
         init_x, init_y = random.randint(1, size-2), random.randint(1, size-2)
         maze._grid[init_x][init_y] = CellType.EMPTY
 
-        # Lista de paredes adyacentes a celdas visitadas
+        # Lista de paredes adyacentes a celdas visitad  as
         walls = []
         for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
             nx, ny = init_x + dx, init_y + dy

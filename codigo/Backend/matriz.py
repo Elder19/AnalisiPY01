@@ -18,71 +18,73 @@ class matriz:
             for n in range(columnas):
                 fila.append(self.numero())
             Matriz.append(fila)
+      
+
         return Matriz
 
     
     def mostrar(self):
-        resultado = "    " + "  ".join(f"{j:2}" for j in range(self.columnas)) + "\n"
+
+        resultado = "    "+" ".join(f"{j:2}" for j in range(self.columnas)) + "\n"
         resultado += "   " + "---" * self.columnas + "\n"
         for i, fila in enumerate(self.datos):
             resultado += f"{i:2} | " + "  ".join(str(valor) for valor in fila) + "\n"
         return resultado
 
-    
-    def solucionarMatriz(self,posicionO ,posFinalO):
-        posicion=posicionO
-        posFinal = posFinalO
-        pospasada=[]
-        camino=[]
-        
-        while posicion!= posFinal:
-            fila, columna = posicion
-            pospasada.append(posicion[:])
-            camino.append(posicion[:])
-            self.cambiarSigno(fila,columna)
+    def solucionarMatriz(self, posicionO, posFinalO):
+        fila_inicio, col_inicio = posicionO
+        fila_final, col_final = posFinalO
+        todos_los_caminos = []
 
-             # Movimiento hacia abajo
-            if fila + 1 < self.filas and self.datos[fila + 1][columna] == 1 and [fila + 1, columna] not in pospasada:
-                posicion = [fila + 1, columna]
+        def solucionarMatriz2(fila ,columna,camino,visitado):
+            if (fila, columna) in visitado:
+                return
+            camino.append((fila, columna))
+            visitado.add((fila, columna))
+            if [fila, columna] == [fila_final, col_final]:
+                todos_los_caminos.append(camino.copy())
+            else:
+                if fila + 1 < self.filas and self.datos[fila + 1][columna] == 1   :
+                     solucionarMatriz2(fila+1,columna, camino, visitado)
+                if fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 :
+                    solucionarMatriz2(fila-1,columna, camino, visitado)
+                if columna + 1 < self.columnas and self.datos[fila][columna + 1] == 1 :
+                     solucionarMatriz2(fila,columna+1, camino, visitado)
+                if columna - 1 >= 0 and self.datos[fila][columna - 1] == 1 :
+                     solucionarMatriz2(fila,columna-1, camino, visitado)
                 
-                continue
-
-            # Movimiento hacia arriba
-            elif fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 and [fila - 1, columna] not in pospasada:
-                posicion = [fila - 1, columna]
-                continue
-
-            # Movimiento hacia la derecha
-            elif columna + 1 < self.columnas and self.datos[fila][columna + 1] == 1 and [fila, columna + 1] not in pospasada:
-                posicion = [fila, columna + 1]
-                continue
-
-            # Movimiento hacia la izquierda
-            elif columna - 1 >= 0 and self.datos[fila][columna - 1] == 1 and [fila, columna - 1] not in pospasada:
-                posicion = [fila, columna - 1]
-                continue
-
-            # Si no hay camino posible
-            break
-                
-        return self.mostrar()
+            camino.pop()
+            visitado.remove((fila, columna))
         
-    def menuPartida():
-        fila=input("ingrese la fila de partida")
-        columna=input("ingrese la columna de partida")
-        filaFinal=input("ingrese la fila final")
-        columnaFinal=input("ingrese la columna final")  
-    def cambiarSigno(self, fila, columma):
-        self.datos[fila][columma]=3
+        solucionarMatriz2(fila_inicio, col_inicio, [], set())
+        for numero,camino in enumerate(todos_los_caminos):
+            for fila, col in camino:
+                print (numero)
+                self.cambiarSigno(fila, col,numero+1)
+        if  len (todos_los_caminos)>0:        
+            return self.mostrar()  
+        else:
+            print("no hay solucion en el punto de partida")       
+                 
+    def menuPartida(self):
+        fila = int(input("Ingrese la fila de partida: "))
+        columna = int(input("Ingrese la columna de partida: "))
+        filaFinal = int(input("Ingrese la fila final: "))
+        columnaFinal = int(input("Ingrese la columna final: "))
+        print("\nDespués de solucionar:\n")
+        print(self.solucionarMatriz([fila, columna], [filaFinal, columnaFinal]))
+        
+    def cambiarSigno(self, fila, columma,signo):
+        self.datos[fila][columma]=signo
         return (self.datos[fila][columma])
     
     def devolverSigno(self, fila, columma):
         self.datos[fila][columma]=1
+            
         return (self.datos[fila][columma])                   
                         
-
-m = matriz(25, 15)
+"falta validar puntos de partida y final validos, guardar matriz y mostrar los 3 caso peor mejor y promedio"
+m = matriz(20, 20)
 print("Original:")
 print(m.mostrar())
-print("\nDespués de solucionar:")
-print(m.solucionarMatriz([1,1],[10,3]))
+m.menuPartida()

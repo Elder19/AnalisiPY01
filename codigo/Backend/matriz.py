@@ -73,9 +73,11 @@ class matriz:
         columna = int(input("Ingrese la columna de partida: "))
         filaFinal = int(input("Ingrese la fila final: "))
         columnaFinal = int(input("Ingrese la columna final: "))
-        print("\nDespués de solucionar:\n")
-        print(self.solucionarMatriz([fila, columna], [filaFinal, columnaFinal]))
-    
+        if  self.datos[fila][columna] !=0 and self.datos[filaFinal][columnaFinal]!=0:
+            print("\nDespués de solucionar:\n")
+            print(self.solucionarMatriz([fila, columna], [filaFinal, columnaFinal]))
+        else: 
+            return False 
         
     def cambiarSigno(self, fila, columma,signo):
         if self.datos[fila][columma]==1:

@@ -1,0 +1,120 @@
+/* Estilos generales de la ventana */
+QMainWindow {
+    background-color: #2c3e50;
+}
+
+/* Frame de bienvenida */
+#frame_bienvenida {
+    background-color: #34495e;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* Label de bienvenida */
+#label_bienvenida {
+    color: #ecf0f1;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Contenedor de botones */
+#contenedor_botones {
+    background-color: transparent;
+}
+
+/* Estilos base para botones */
+QPushButton {
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 50px 25px;
+    font-size: 28px;
+    min-width: 150px;
+    min-height: 50px;
+    border-radius: 10px;
+    margin: 10px;
+    font-family: "Formula1-Bold", "Titillium Web", sans-serif;
+}
+
+/* Botón Juego */
+#boton_juego {
+    background-color: #27ae60;
+}
+
+#boton_juego:hover {
+    background-color: #2ecc71;
+}
+
+#boton_juego:pressed {
+    background-color: #219955;
+}
+
+/* Botón Resolución */
+#boton_resolucion {
+    background-color: #e67e22;
+}
+
+#boton_resolucion:hover {
+    background-color: #f39c12;
+}
+
+#boton_resolucion:pressed {
+    background-color: #d35400;
+}
+
+/* Estilos para la ventana de juego */
+QGraphicsView {
+    background-color: #ecf0f1;
+    border: 2px solid #7f8c8d;
+}
+
+/* Botón del menú hamburguesa */
+#btn_hamburguesa {
+    font-size: 20px;
+    padding: 5px;
+    min-width: 40px;
+    min-height: 40px;
+    background-color: #3498db;
+    border-radius: 5px;
+}
+
+#btn_hamburguesa:hover {
+    background-color: #2980b9;
+}
+
+/* Menú lateral */
+#menu_widget {
+    background-color: #34495e;
+    border-right: 1px solid #2c3e50;
+}
+
+/* Botones del menú lateral */
+#btn_menu {
+    background-color: transparent;
+    color: #ecf0f1;
+    padding: 15px;
+    font-size: 16px;
+    text-align: left;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+#btn_menu:hover {
+    background-color: #3d566e;
+}
+
+#btn_menu:pressed {
+    background-color: #2c3e50;
+}
+
+/* Botón de solución */
+#btn_solucion {
+    background-color: #3498db;
+    padding: 15px;
+    font-size: 18px;
+    margin: 10px;
+}
+
+#btn_solucion:hover {
+    background-color: #2980b9;
+}

@@ -7,6 +7,7 @@ class matriz:
             self.columnas = columnas
             self.datos = self.crearMatriz(filas, columnas)
             self.matrizO=self.crearMatriz(filas, columnas)
+            self.soluciones=[]
             
     def numero(self):
             return random.randint(0, 1)
@@ -61,7 +62,8 @@ class matriz:
             for fila, col in camino:
                 print (numero)
                 self.cambiarSigno(fila, col,numero+1)
-        if  len (todos_los_caminos)>0:        
+        if  len (todos_los_caminos)>0: 
+            self.seleccionSolucion(todos_los_caminos)       
             return self.mostrar()  
         else:
             print("no hay solucion en el punto de partida")       
@@ -73,16 +75,34 @@ class matriz:
         columnaFinal = int(input("Ingrese la columna final: "))
         print("\nDespués de solucionar:\n")
         print(self.solucionarMatriz([fila, columna], [filaFinal, columnaFinal]))
+    
         
     def cambiarSigno(self, fila, columma,signo):
-        self.datos[fila][columma]=signo
+        if self.datos[fila][columma]==1:
+            self.datos[fila][columma]=signo
+        else: 
+              self.datos[fila][columma]=3
         return (self.datos[fila][columma])
     
     def devolverSigno(self, fila, columma):
         self.datos[fila][columma]=1
             
         return (self.datos[fila][columma])                   
-                        
+    def seleccionSolucion(self,caminos):
+        mejorCaso=[]
+        peorCaso=[]
+        casoPromedio=[]
+        
+        for x in caminos:
+            if len(x)<len(mejorCaso) or mejorCaso==[]:
+                    mejorCaso=x
+            elif  len(x)>len(peorCaso) or peorCaso==[]:
+                    peorCaso=x
+            #preguntar si es nesesario el caso promedio de pasos  
+        print(mejorCaso)
+        print(peorCaso)
+    
+                      
 "falta validar puntos de partida y final validos, guardar matriz y mostrar los 3 caso peor mejor y promedio"
 m = matriz(20, 20)
 print("Original:")

@@ -1,4 +1,5 @@
 import random
+import JsonM as jm
 from PyQt5.QtWidgets import QMessageBox
 class matriz: 
 
@@ -103,10 +104,18 @@ class matriz:
             #preguntar si es nesesario el caso promedio de pasos  
         print(mejorCaso)
         print(peorCaso)
-    
+    def guardarMatriz(self):  
+        Nombre=input("Nombre")
+        Dmatriz={"Nombre" : Nombre , "Matriz" : self.matrizO}
+        jm.escribirMatriz(Dmatriz)
+    def CargarMatriz(self):  
+        self.matrizO=jm.cargarDatos()
+      
                       
 "falta validar puntos de partida y final validos, guardar matriz y mostrar los 3 caso peor mejor y promedio"
-m = matriz(20, 20)
+m.CargarMatriz()
 print("Original:")
 print(m.mostrar())
 m.menuPartida()
+m.guardarMatriz()
+

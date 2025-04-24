@@ -118,3 +118,19 @@ QGraphicsView {
 #btn_solucion:hover {
     background-color: #2980b9;
 }
+
+/* Frame de bienvenida */
+#frame_bienvenida {
+    background-color: rgba(52, 73, 94, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #7f8c8d;
+}
+
+/* Label de bienvenida */
+#label_bienvenida {
+    color: #ecf0f1;
+    font-size: 32px;
+    font-weight: bold;
+    padding: 20px;
+}

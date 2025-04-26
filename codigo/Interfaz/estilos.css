@@ -134,3 +134,10 @@ QGraphicsView {
     font-weight: bold;
     padding: 20px;
 }
+/* Fondo para el widget central */
+#widget_central {
+    background-image: url(ruta/a/tu/imagen.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}

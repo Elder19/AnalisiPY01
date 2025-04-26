@@ -391,13 +391,14 @@ class VentanaResolucion(VentanaBase):
             self.dibujar_laberinto()
             
     def mostrar_solucion(self):
-        """Muestra el camino óptimo"""
+    
         if not self.laberinto:
             return
-
+         # Limpiar solución anterior
+    
+        self.items_solucion.clear()
         # Resolver laberinto
         resultado = self.laberinto.solucionarMatriz(list(self.inicio), list(self.fin))
-        print  (resultado)
         if resultado:
             # Dibujar solución
             cell_size = 30
@@ -447,7 +448,7 @@ class VentanaResolucion(VentanaBase):
             QMessageBox.critical(self, "Error", f"No se pudo cargar el laberinto:\n{str(e)}")
             
             
-class VentanaLaberinto(VentanaBase): #ventana 1
+class VentanaLaberinto(QMainWindow): #ventana 1
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Laberinto Mágico")
@@ -458,7 +459,9 @@ class VentanaLaberinto(VentanaBase): #ventana 1
         self.setCentralWidget(self.widget_central)
         self.layout_principal = QVBoxLayout(self.widget_central)
         self.layout_principal.setContentsMargins(0, 0, 0, 0)  # Eliminar márgenes
-
+         
+        label = QLabel("¡Bienvenido al Laberinto Mágico!")
+        self.layout_principal.addWidget(label)
         #botones
         self.contenedor_botones = QWidget(objectName="contenedor_botones")
         self.layout_botones = QHBoxLayout(self.contenedor_botones)
@@ -492,7 +495,7 @@ class VentanaLaberinto(VentanaBase): #ventana 1
 
         # Mostrar mensaje después de un tiempo
         QTimer.singleShot(2000, self.mostrar_mensaje_click)
-
+        
     def mostrar_mensaje_click(self):
         """Muestra el mensaje 'Realiza click para empezar' con animación"""
         self.label_click.setText("Realiza click para empezar")
@@ -515,6 +518,14 @@ class VentanaLaberinto(VentanaBase): #ventana 1
                 self.setStyleSheet(archivo.read())
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo de estilos en {ruta_css}")
+        self.widget_central.setStyleSheet("""
+            QWidget {
+                background-image: url(Interfaz/fondo.webp);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+            }
+        """)
     def iniciar_juego(self):
         """Lanza la vista de juego dentro de la misma ventana"""
         nuevo_juego = VentanaJuego()

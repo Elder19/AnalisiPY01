@@ -90,8 +90,8 @@ class VentanaBase(QMainWindow):
     
     def volver_inicio(self):
         """Regresa a la ventana principal"""
-        self.parent().show()
-        self.close()
+        ventana_base = VentanaLaberinto()
+        self.parent().cambiar_central_widget(ventana_base)
     
     def cargar_estilos(self):
         """Carga los estilos CSS"""
@@ -101,7 +101,13 @@ class VentanaBase(QMainWindow):
                 self.setStyleSheet(f.read())
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo de estilos en {ruta_css}")
-
+    def cambiar_central_widget(self, nuevo_widget):
+        """Cambia el contenido de la ventana."""
+        self.layout_principal.removeWidget(self.area_principal)  # quitas el viejo
+        self.area_principal.deleteLater()  # destruyes el viejo widget
+        self.area_principal = nuevo_widget
+        self.area_principal_layout = QVBoxLayout(self.area_principal)
+        self.main_content.addWidget(self.area_principal)  
 class VentanaJuego(VentanaBase):
     def __init__(self, parent=None):
         super().__init__(parent, "Laberinto Mágico - Juego")
@@ -306,7 +312,7 @@ class VentanaJuego(VentanaBase):
 
 class VentanaResolucion(VentanaBase):
     def __init__(self, parent=None):
-        super().__init__(parent, "Laberinto Mágico - Juego")
+        super().__init__(parent)
         self.filas = 20
         self.columnas = 20
         self.laberinto = matriz(self.filas, self.columnas)
@@ -340,7 +346,7 @@ class VentanaResolucion(VentanaBase):
         self.btn_cargar.clicked.connect(self.cargar_laberinto)
         
         self.dibujar_laberinto()
-   
+    
     def dibujar_laberinto(self):
         """Dibuja el laberinto en la escena"""
         self.scene.clear()
@@ -441,7 +447,7 @@ class VentanaResolucion(VentanaBase):
             QMessageBox.critical(self, "Error", f"No se pudo cargar el laberinto:\n{str(e)}")
             
             
-class VentanaLaberinto(QMainWindow):
+class VentanaLaberinto(VentanaBase): #ventana 1
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Laberinto Mágico")
@@ -453,53 +459,14 @@ class VentanaLaberinto(QMainWindow):
         self.layout_principal = QVBoxLayout(self.widget_central)
         self.layout_principal.setContentsMargins(0, 0, 0, 0)  # Eliminar márgenes
 
-
-        # Frame de bienvenida
-        self.frame_bienvenida = QFrame(objectName="frame_bienvenida")
-        self.frame_bienvenida.setStyleSheet("""
-            #frame_bienvenida {
-                background-color: rgba(52, 73, 94, 0.7);  /* Más transparente */
-                border-radius: 15px;
-                padding: 20px;
-            }
-        """)
-        self.frame_bienvenida.setFixedSize(600, 400)  # ancho: 400px, alto: 250px
-        self.frame_bienvenida.setGeometry(self.rect())  # Asegura que ocupe toda la pantalla
-        self.layout_bienvenida = QVBoxLayout(self.frame_bienvenida)
-
-        # Label de bienvenida
-        self.label_bienvenida = QLabel("Bienvenido al juego Laberinto", objectName="label_bienvenida")
-        self.label_bienvenida.setAlignment(Qt.AlignCenter)
-        self.label_bienvenida.setStyleSheet("""
-            font-size: 32px;
-            font-weight: bold;
-            color: #ecf0f1;
-            padding: 20px;
-        """)
-
-        # Label de mensaje secundario
-        self.label_click = QLabel()
-        self.label_click.setAlignment(Qt.AlignCenter)
-        self.label_click.setStyleSheet("""
-            font-size: 18px;
-            color: #bdc3c7;
-            font-style: italic;
-            padding: 10px;
-        """)
-        self.label_click.hide()
-
-        # Agregar labels al layout de bienvenida
-        self.layout_bienvenida.addWidget(self.label_bienvenida)
-        self.layout_bienvenida.addWidget(self.label_click)
-
-        # Contenedor de botones
+        #botones
         self.contenedor_botones = QWidget(objectName="contenedor_botones")
         self.layout_botones = QHBoxLayout(self.contenedor_botones)
-
+        
         self.boton_juego = QPushButton("Juego", objectName="boton_juego")#INICIA VENTANA JUEGO
         self.boton_juego.clicked.connect(self.iniciar_juego)
 
-        self.boton_resolucion = QPushButton("Resolhhhución", objectName="boton_resolucion")#INICIA VENTANA RESOLUCION
+        self.boton_resolucion = QPushButton("Resolver", objectName="boton_resolucion")#INICIA VENTANA RESOLUCION
         self.boton_resolucion.clicked.connect(self.mostrar_resolucion)
 
         self.layout_botones.addStretch()
@@ -507,26 +474,21 @@ class VentanaLaberinto(QMainWindow):
         self.layout_botones.addWidget(self.boton_resolucion)
         self.layout_botones.addStretch()
 
-        # Efecto blur al contenedor de botones (al inicio)
-        self.blur_botones = QGraphicsBlurEffect()
-        self.blur_botones.setBlurRadius(10)
-        self.contenedor_botones.setGraphicsEffect(self.blur_botones)
+       
 
-        # Deshabilitar botones al inicio
-        self.boton_juego.setEnabled(False)
-        self.boton_resolucion.setEnabled(False)
+     #habilitar botones al inicio
+        self.boton_juego.setEnabled(True)
+        self.boton_resolucion.setEnabled(True)
 
-        self.contenedor_botones.show()  # Mostrar desde el inicio pero con desenfoque
-
+       
         # Agregar widgets al layout principal
-        self.layout_principal.addWidget(self.frame_bienvenida)
+        
         self.layout_principal.addWidget(self.contenedor_botones)
 
         # Cargar estilos
         self.cargar_estilos()
 
-        # Evento de clic en el frame de bienvenida
-        self.frame_bienvenida.mousePressEvent = self.mostrar_botones
+        
 
         # Mostrar mensaje después de un tiempo
         QTimer.singleShot(2000, self.mostrar_mensaje_click)
@@ -543,19 +505,7 @@ class VentanaLaberinto(QMainWindow):
         self.animacion_click.setLoopCount(-1)
         self.animacion_click.start()
 
-    def mostrar_botones(self, event=None):
-        """Oculta la bienvenida y muestra los botones nítidos"""
-        if hasattr(self, 'animacion_click'):
-            self.animacion_click.stop()
 
-        self.frame_bienvenida.hide()
-
-        # Quitar efecto blur de los botones
-        self.contenedor_botones.setGraphicsEffect(None)
-
-        # Habilitar los botones
-        self.boton_juego.setEnabled(True)
-        self.boton_resolucion.setEnabled(True)
 
     def cargar_estilos(self):
         """Carga los estilos CSS desde archivo"""
@@ -565,19 +515,19 @@ class VentanaLaberinto(QMainWindow):
                 self.setStyleSheet(archivo.read())
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo de estilos en {ruta_css}")
-
     def iniciar_juego(self):
-        """Lanza la ventana del juego"""
-        self.hide()
-        self.ventana_juego = VentanaJuego(self)
-        self.ventana_juego.show()
+        """Lanza la vista de juego dentro de la misma ventana"""
+        nuevo_juego = VentanaJuego()
+        self.cambiar_central_widget(nuevo_juego)
 
-    def mostrar_resolucion(self): # MUESTRA VENTANAS DE JUEGO 
-        """Muestra mensaje o lanza modo resolución"""
-        self.hide()
-        self.ventana_resolucion = VentanaResolucion(self)
-        self.ventana_resolucion.setWindowTitle("Laberinto Mágico - Resolución")
-        self.ventana_resolucion.show()
+    def mostrar_resolucion(self):
+        """Lanza la vista de resolución dentro de la misma ventana"""
+        nueva_resolucion = VentanaResolucion()
+        self.cambiar_central_widget(nueva_resolucion)
+
+    def cambiar_central_widget(self, nuevo_widget):
+        """Reemplaza el contenido de la ventana principal"""
+        self.setCentralWidget(nuevo_widget)
 
     def closeEvent(self, event):
         """Cierra completamente la aplicación al cerrar la ventana principal"""
@@ -587,6 +537,6 @@ class VentanaLaberinto(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ventana = VentanaLaberinto()
-    ventana.show()
+    ventana.showFullScreen()
     sys.exit(app.exec())
 

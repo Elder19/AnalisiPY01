@@ -35,7 +35,7 @@ class matriz:
         grid[start_x][start_y] = 1
         dfs(start_x, start_y)
         def sumaCaminos():
-            for x in range(filas*columnas//5):
+            for x in range(filas*columnas//8):
                 x,y=random.randint(1,filas-1), random.randint(1,columnas-1)
                 if grid[x][y]==0: 
                     grid[x][y]=1 #abre posibilidad 
@@ -67,7 +67,7 @@ class matriz:
      
         
         def solucionarMatriz2(fila_inicio ,col_inicio,camino,visitado):
-            if len(todos_los_caminos) >= 3:
+            if len(todos_los_caminos) >= 5:
                 return
             fila, columna = fila_inicio, col_inicio
             print("solucionando matriz 3")

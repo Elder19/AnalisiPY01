@@ -11,7 +11,7 @@ class VentanaResolucion(VentanaBase):
         self.columnas = 11
         self.laberinto = None
         self.inicio = (0, 0)
-        self.fin = (self.filas-1, self.columnas-1)
+        
         self.items_solucion = []
 
         self.grid_widget = QGraphicsView()
@@ -45,8 +45,7 @@ class VentanaResolucion(VentanaBase):
 
     def inicializar_laberinto(self):
         self.laberinto = matriz(self.filas, self.columnas)
-        self.laberinto.datos[self.inicio[0]][self.inicio[1]] = 1
-        self.laberinto.datos[self.fin[0]][self.fin[1]] = 1
+        self.fin = self.laberinto.puntoFInal()
         self.dibujar_laberinto()
 
     def dibujar_laberinto(self):
@@ -80,30 +79,34 @@ class VentanaResolucion(VentanaBase):
             pen = QPen(QColor("#3498db"), 2)
             caminos = self.laberinto.soluciones
             tomados=[]
+            celdas_pintadas = set()
             if caminos:
                 camino = min(caminos, key=len)
                 if not camino in tomados:
                     for paso in camino:
-                        i, j = paso
-                        rect = self.scene.addRect(
-                            j*cell_size, i*cell_size, cell_size, cell_size,
-                            pen,QColor(52, 152, 219, 100) # Rojo semitransparente
-                        )
+                        if (i, j) not in celdas_pintadas:
+                            i, j = paso
+                            rect = self.scene.addRect(
+                                j*cell_size, i*cell_size, cell_size, cell_size,
+                                pen,QColor(52, 152, 219, 100) # Rojo semitransparente
+                            )
+                            celdas_pintadas.add((i, j))
                 tomados.append(camino)  
                 camino = max(caminos, key=len)
                     
                 if not camino in tomados:
                     for paso in camino:
-                        i, j = paso
-                        rect = self.scene.addRect(
-                            j*cell_size, i*cell_size, cell_size, cell_size,
-                            pen,QColor(255, 0, 0, 100) # Rojo semitransparente
-                        ) 
+                        if (i, j) not in celdas_pintadas:
+                            i, j = paso
+                            rect = self.scene.addRect(
+                                j*cell_size, i*cell_size, cell_size, cell_size,
+                                pen,QColor(255, 0, 0, 100) # Rojo semitransparente
+                            )
+                            celdas_pintadas.add((i, j))
                 tomados.append(camino)
                 self.items_solucion.append(rect)
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
-
 
     def guardar_laberinto(self):
         if self.laberinto:

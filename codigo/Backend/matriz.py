@@ -67,7 +67,7 @@ class matriz:
      
         
         def solucionarMatriz2(fila_inicio ,col_inicio,camino,visitado):
-            if len(todos_los_caminos) >= 5:
+            if len(todos_los_caminos) >=8:
                 return
             fila, columna = fila_inicio, col_inicio
           

@@ -20,7 +20,7 @@ class VentanaLaberinto(QMainWindow):
         self.setWindowTitle("Laberinto Mágico")
         self.setMinimumSize(800, 600)
         self.label_click = QLabel(self)
-
+    
         # Widget central
         self.widget_central = QWidget()
         self.setCentralWidget(self.widget_central)
@@ -76,7 +76,7 @@ class VentanaLaberinto(QMainWindow):
         self.layout_bienvenida = QVBoxLayout(self.frame_bienvenida)
         self.layout_bienvenida.setAlignment(Qt.AlignCenter)
 
-        self.label_bienvenida = QLabel("Bienvenido al juego Laberinto", objectName="label_bienvenida")
+        self.label_bienvenida = QLabel("Bienvenido al Laberinto", objectName="label_bienvenida")
         self.label_bienvenida.setAlignment(Qt.AlignCenter)
         self.label_bienvenida.setStyleSheet("""
             font-size: 32px;

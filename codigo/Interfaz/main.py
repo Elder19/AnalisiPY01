@@ -1,6 +1,8 @@
-from Interfaz.Ventana_laberinto import VentanaLaberinto
 import sys
-from PySide6.QtWidgets import (QApplication)
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from PySide6.QtWidgets import QApplication
 from Interfaz.Ventana_laberinto import VentanaLaberinto
 
 if __name__ == "__main__":

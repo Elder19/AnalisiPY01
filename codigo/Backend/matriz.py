@@ -1,4 +1,4 @@
-import random
+import random, time
 from Backend import JsonM as jm
 from PySide6.QtWidgets import QMessageBox
 
@@ -35,7 +35,7 @@ class matriz:
         grid[start_x][start_y] = 1
         dfs(start_x, start_y)
         def sumaCaminos():
-            for x in range(filas*columnas//8):
+            for x in range(filas*columnas//10):
                 x,y=random.randint(1,filas-1), random.randint(1,columnas-1)
                 if grid[x][y]==0: 
                     grid[x][y]=1 #abre posibilidad 
@@ -55,7 +55,8 @@ class matriz:
         fila_inicio, col_inicio = posicionO
         fila_final, col_final = posFinalO
         todos_los_caminos = []
-     
+        Time=20
+        Inicio=time.time()
         if not (0 <= fila_inicio < self.filas and 0 <= col_inicio < self.columnas and
             0 <= fila_final < self.filas and 0 <= col_final < self.columnas):
             print("Puntos de inicio o fin están fuera de los límites.")
@@ -67,10 +68,12 @@ class matriz:
      
         
         def solucionarMatriz2(fila_inicio ,col_inicio,camino,visitado):
-            if len(todos_los_caminos) >=8:
-                return
+           # if len(todos_los_caminos) >=10:
+                #return
             fila, columna = fila_inicio, col_inicio
-          
+            if time.time()-Inicio  > Time:
+                return
+
             if (fila, columna) in visitado:
                 return 
             camino.append((fila, columna))
@@ -78,14 +81,15 @@ class matriz:
             if [fila, columna] == [fila_final, col_final]:
                 todos_los_caminos.append(camino.copy())
             else:
-                if fila + 1 < self.filas and self.datos[fila + 1][columna] == 1   :
-                     solucionarMatriz2(fila+1,columna, camino, visitado)
-                if fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 :
-                    solucionarMatriz2(fila-1,columna, camino, visitado)
                 if columna + 1 < self.columnas and self.datos[fila][columna + 1] == 1 :
                      solucionarMatriz2(fila,columna+1, camino, visitado)
                 if columna - 1 >= 0 and self.datos[fila][columna - 1] == 1 :
                      solucionarMatriz2(fila,columna-1, camino, visitado)    
+                if fila + 1 < self.filas and self.datos[fila + 1][columna] == 1   :
+                     solucionarMatriz2(fila+1,columna, camino, visitado)
+                if fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 :
+                    solucionarMatriz2(fila-1,columna, camino, visitado)
+               
    
        
             camino.pop()

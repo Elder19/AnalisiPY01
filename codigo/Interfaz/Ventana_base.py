@@ -89,3 +89,11 @@ class VentanaBase(QMainWindow):
                 self.setStyleSheet(f.read())
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo de estilos en {ruta_css}")
+    
+    def cambiar_central_widget(self, nuevo_widget):
+        """Cambia el contenido de la ventana."""
+        self.layout_principal.removeWidget(self.area_principal)  # quitas el viejo
+        self.area_principal.deleteLater()  # destruyes el viejo widget
+        self.area_principal = nuevo_widget
+        self.area_principal_layout = QVBoxLayout(self.area_principal)
+        self.main_content.addWidget(self.area_principal)  

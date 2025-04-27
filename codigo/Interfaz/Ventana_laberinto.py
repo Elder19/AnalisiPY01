@@ -9,9 +9,8 @@ from PySide6.QtWidgets import (QApplication, QMainWindow,
 from PySide6.QtCore import (QPropertyAnimation, QTimer, Qt, 
                            QPoint, QEasingCurve, QRect)
 from PySide6.QtGui import QPen, QColor
-from Backend.matriz import matriz
-from Interfaz.Ventana_juego import VentanaJuego
-from Interfaz.Ventana_resolucion import VentanaResolucion
+from Ventana_juego import VentanaJuego
+from Ventana_resolucion import VentanaResolucion
 
 
 class VentanaLaberinto(QMainWindow):
@@ -20,7 +19,7 @@ class VentanaLaberinto(QMainWindow):
         self.setWindowTitle("Laberinto Mágico")
         self.setMinimumSize(800, 600)
         self.label_click = QLabel(self)
-    
+
         # Widget central
         self.widget_central = QWidget()
         self.setCentralWidget(self.widget_central)
@@ -50,11 +49,6 @@ class VentanaLaberinto(QMainWindow):
         self.contenedor_botones_layout.addWidget(self.boton_resolucion)
         self.contenedor_botones_layout.addStretch()
 
-        # Aplicar blur SOLO al contenedor de botones
-        self.blur_botones = QGraphicsBlurEffect()
-        self.blur_botones.setBlurRadius(10)
-        self.contenedor_botones.setGraphicsEffect(self.blur_botones)
-
         # Deshabilitar botones al inicio
         self.boton_juego.setEnabled(False)
         self.boton_resolucion.setEnabled(False)
@@ -76,7 +70,7 @@ class VentanaLaberinto(QMainWindow):
         self.layout_bienvenida = QVBoxLayout(self.frame_bienvenida)
         self.layout_bienvenida.setAlignment(Qt.AlignCenter)
 
-        self.label_bienvenida = QLabel("Bienvenido al Laberinto", objectName="label_bienvenida")
+        self.label_bienvenida = QLabel("Bienvenido al juego Laberinto", objectName="label_bienvenida")
         self.label_bienvenida.setAlignment(Qt.AlignCenter)
         self.label_bienvenida.setStyleSheet("""
             font-size: 32px;
@@ -105,7 +99,7 @@ class VentanaLaberinto(QMainWindow):
         self.cargar_estilos()
 
         # Mensaje de click después de 2 segundos
-        QTimer.singleShot(2000, self.mostrar_mensaje_click)
+        QTimer.singleShot(800, self.mostrar_mensaje_click)
 
     def resizeEvent(self, event):
         """Reajustar posiciones si la ventana cambia de tamaño"""
@@ -158,14 +152,14 @@ class VentanaLaberinto(QMainWindow):
 
         # Animación de opacidad (fade-out)
         self.animacion_opacidad = QPropertyAnimation(self.frame_bienvenida, b"windowOpacity")
-        self.animacion_opacidad.setDuration(1200)
+        self.animacion_opacidad.setDuration(700)
         self.animacion_opacidad.setStartValue(1.0)
         self.animacion_opacidad.setEndValue(0.0)
         self.animacion_opacidad.setEasingCurve(QEasingCurve.OutCubic)
 
         # Animación de posición (slide down)
         self.animacion_posicion = QPropertyAnimation(self.frame_bienvenida, b"geometry")
-        self.animacion_posicion.setDuration(1200)
+        self.animacion_posicion.setDuration(700)
         geometry_inicial = self.frame_bienvenida.geometry()
         geometry_final = QRect(
             geometry_inicial.x(),
@@ -201,12 +195,10 @@ class VentanaLaberinto(QMainWindow):
         """)
 
     def iniciar_juego(self):
-        self.hide()
         self.ventana_juego = VentanaJuego(self)
         self.ventana_juego.showFullScreen()
 
     def mostrar_resolucion(self):
-        self.hide()
         self.ventana_resolucion = VentanaResolucion(self)
         self.ventana_resolucion.showFullScreen()
 

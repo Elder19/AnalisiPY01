@@ -5,8 +5,26 @@ def cargarDatos():
         datos= json.load(arcvhivo)
         return datos
 
+import json
 
 def escribirMatriz(Dmatriz):
-    with open('datos.json','w') as archivo: 
-        json.dump(Dmatriz,archivo)
+    try:
+
+        with open('datos.json', 'r') as archivo:
+            try:
+                datos = json.load(archivo)
+               
+                if isinstance(datos, dict):
+                    datos = [datos]
+            except json.JSONDecodeError:
+                
+                datos = []
+    except FileNotFoundError:
+    
+        datos = []
+ 
+    datos.append(Dmatriz)
+
+    with open('datos.json', 'w') as archivo:
+        json.dump(datos, archivo, indent=6) 
     return True

@@ -119,13 +119,15 @@ class matriz:
         peor = max(caminos, key=len)
         return mejor, peor
 
-    def guardarMatriz(self, nombre="laberinto_guardado"):
+    def guardarMatriz(self):
         """Guarda la matriz original en JSON"""
+       
         datos = {
             "filas": self.filas,
             "columnas": self.columnas,
             "matriz": self.matrizO
         }
+      
         jm.escribirMatriz(datos)
         return True
 

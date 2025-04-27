@@ -70,7 +70,7 @@ class matriz:
             if len(todos_los_caminos) >= 5:
                 return
             fila, columna = fila_inicio, col_inicio
-            print("solucionando matriz 3")
+          
             if (fila, columna) in visitado:
                 return 
             camino.append((fila, columna))

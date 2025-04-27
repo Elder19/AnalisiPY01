@@ -66,31 +66,44 @@ class VentanaResolucion(VentanaBase):
         self.scene.addEllipse(j * cell_size + 5, i * cell_size + 5, 20, 20, pen, QColor("#e74c3c"))
 
     def mostrar_solucion(self):
+        
         if not self.laberinto:
             return
-
-        for item in self.items_solucion:
-            self.scene.removeItem(item)
+         # Limpiar solución anterior
+    
         self.items_solucion.clear()
-
+        # Resolver laberinto
         resultado = self.laberinto.solucionarMatriz(list(self.inicio), list(self.fin))
-
         if resultado:
+            # Dibujar solución
             cell_size = 30
             pen = QPen(QColor("#3498db"), 2)
-
             caminos = self.laberinto.soluciones
+            tomados=[]
             if caminos:
                 camino = min(caminos, key=len)
-                for paso in camino:
-                    i, j = paso
-                    rect = self.scene.addRect(
-                        j*cell_size, i*cell_size, cell_size, cell_size,
-                        pen, QColor(52, 152, 219, 100)
-                    )
-                    self.items_solucion.append(rect)
+                if not camino in tomados:
+                    for paso in camino:
+                        i, j = paso
+                        rect = self.scene.addRect(
+                            j*cell_size, i*cell_size, cell_size, cell_size,
+                            pen,QColor(52, 152, 219, 100) # Rojo semitransparente
+                        )
+                tomados.append(camino)  
+                camino = max(caminos, key=len)
+                    
+                if not camino in tomados:
+                    for paso in camino:
+                        i, j = paso
+                        rect = self.scene.addRect(
+                            j*cell_size, i*cell_size, cell_size, cell_size,
+                            pen,QColor(255, 0, 0, 100) # Rojo semitransparente
+                        ) 
+                tomados.append(camino)
+                self.items_solucion.append(rect)
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
+
 
     def guardar_laberinto(self):
         if self.laberinto:

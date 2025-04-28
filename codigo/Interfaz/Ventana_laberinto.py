@@ -11,7 +11,7 @@ from PySide6.QtCore import (QPropertyAnimation, QTimer, Qt,
 from PySide6.QtGui import QPen, QColor
 from Ventana_juego import VentanaJuego
 from Ventana_resolucion import VentanaResolucion
-
+from Backend.matriz import matriz
 
 class VentanaLaberinto(QMainWindow):
     def __init__(self):
@@ -19,7 +19,7 @@ class VentanaLaberinto(QMainWindow):
         self.setWindowTitle("Laberinto Mágico")
         self.setMinimumSize(800, 600)
         self.label_click = QLabel(self)
-
+        self.laberinto = None
         # Widget central
         self.widget_central = QWidget()
         self.setCentralWidget(self.widget_central)
@@ -100,6 +100,44 @@ class VentanaLaberinto(QMainWindow):
 
         # Mensaje de click después de 2 segundos
         QTimer.singleShot(800, self.mostrar_mensaje_click)
+
+            
+        #Interfaz botones de tamaño
+        self.BotonesTamaño= QWidget(self.widget_central)
+        self.BotonesTamaño.setFixedSize(400,300)#tamano
+        self.BotonesTamaño.move(
+            self.width()-self.BotonesTamaño.width() -295,
+            self.height()-self.BotonesTamaño.height() -290 )#margenes en el campo
+        self.BotonesTamaño.setObjectName("BotonesTamaño")
+
+        self.MatrizT = QGridLayout(self.BotonesTamaño)
+        # Crear botones
+        self.boton5 = QPushButton("5x5", objectName="mostrar_resolucion1")
+        self.boton = QPushButton("10x10", objectName="mostrar_resolucion2")
+        self.boton1 = QPushButton("15x15", objectName="mostrar_resolucion3")
+        self.boton2 = QPushButton("x20x20", objectName="mostrar_resolucion4")
+        self.boton3 = QPushButton("25x25", objectName="mostrar_resolucion5")
+        
+        self.boton5.clicked.connect(lambda: self.crearLAB(5,5))
+        self.boton.clicked.connect(lambda: self.crearLAB(10,10))
+        self.boton1.clicked.connect(lambda: self.crearLAB(15,15))
+        self.boton2.clicked.connect(lambda: self.crearLAB(20,20))
+        self.boton3.clicked.connect(lambda: self.crearLAB(25,25))
+        # Agregar botones al layout
+        self.MatrizT.addWidget(self.boton5, 0, 0)   # Fila 0, Columna 0
+        self.MatrizT.addWidget(self.boton, 0, 1)   # Fila 0, Columna 0
+        self.MatrizT.addWidget(self.boton1, 1, 0)  # Fila 0, Columna 1
+        self.MatrizT.addWidget(self.boton2, 1, 1)  # Fila 1, Columna 0
+        self.MatrizT.addWidget(self.boton3, 2, 0)  # Fila 1, Columna 1
+
+
+    # Ajustar estilos opcionales
+        self.boton.setStyleSheet("font-size: 14px; padding: 0px; background-color: #27ae60;width: 0px;  ")
+        self.boton1.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px;")
+        self.boton2.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px; ")
+        self.boton3.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px;")
+        self.boton5.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px;")
+        self.BotonesTamaño.setStyleSheet("background-color: #270;width: 200px;")
 
     def resizeEvent(self, event):
         """Reajustar posiciones si la ventana cambia de tamaño"""
@@ -199,8 +237,12 @@ class VentanaLaberinto(QMainWindow):
         self.ventana_juego.showFullScreen()
 
     def mostrar_resolucion(self):
-        self.ventana_resolucion = VentanaResolucion(self)
+        self.ventana_resolucion = VentanaResolucion(laberinto=self.laberinto,parent=self)
         self.ventana_resolucion.showFullScreen()
+    def crearLAB(self,fila,columna):
+        print("Creando laberinto de tamaño:", fila, "x", columna)
+        self.laberinto=matriz(fila,columna)
+        
 
     def closeEvent(self, event):
         QApplication.quit()

@@ -7,11 +7,13 @@ from Interfaz.Ventana_base import VentanaBase
 
 
 class VentanaResolucion(VentanaBase):
-    def __init__(self, parent=None):
+    def __init__(self, laberinto=None, parent=None):
         super().__init__(parent)
-        self.filas = 25
-        self.columnas = 25
-        self.laberinto = matriz(self.filas, self.columnas)
+        if laberinto is not None: 
+            self.laberinto = laberinto
+            self.filas = laberinto.filas
+            self.columnas = laberinto.columnas
+        
         self.inicio = (0, 0)
         self.fin = self.laberinto.puntoFInal()
        
@@ -141,9 +143,6 @@ class VentanaResolucion(VentanaBase):
                 self.items_solucion.append(rect)
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
-
-
-
 
     def guardar_laberinto(self):
         """Guarda el laberinto actual"""

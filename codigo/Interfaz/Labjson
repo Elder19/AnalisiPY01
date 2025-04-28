@@ -1,0 +1,23 @@
+ 
+from PySide6.QtWidgets import QPushButton, QGraphicsView, QGraphicsScene, QMessageBox
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPen, QColor
+from Backend.matriz import matriz
+from Interfaz.Ventana_base import VentanaBase
+
+def guardar_laberinto(self):
+        """Guarda el laberinto actual"""
+        if self.laberinto:
+            self.laberinto.guardarMatriz()
+            QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
+    
+def cargar_laberinto(self):
+        """Carga un laberinto guardado"""
+        try:
+            self.laberinto = matriz(1, 1)  # Tamaño dummy
+            self.laberinto.CargarMatriz()
+            self.filas = len(self.laberinto.datos)
+            self.columnas = len(self.laberinto.datos[0])
+            self.dibujar_laberinto()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"No se pudo cargar el laberinto:\n{str(e)}")

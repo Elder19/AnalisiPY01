@@ -141,3 +141,13 @@ QGraphicsView {
     background-position: center;
     background-size: cover;
 }
+
+
+#BotonesTamaño:hover {
+    background-color: #e71894;
+}
+
+#BotonesTamaño {
+    background-color: rgb(255, 19, 19);
+    width: 200px;
+}

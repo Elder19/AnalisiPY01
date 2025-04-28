@@ -97,3 +97,4 @@ class VentanaBase(QMainWindow):
         self.area_principal = nuevo_widget
         self.area_principal_layout = QVBoxLayout(self.area_principal)
         self.main_content.addWidget(self.area_principal)  
+    

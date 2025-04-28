@@ -11,9 +11,9 @@ class VentanaJuego(VentanaBase):
             self.laberinto = laberinto
             self.filas = laberinto.filas
             self.columnas = laberinto.columnas
-        self.inicio = (0, 0)
+        self.inicio = None
         self.fin = self.laberinto.puntoFInal()
-       
+        
 
         self.juego_activo = False
         self.posicion_actual = None
@@ -29,7 +29,7 @@ class VentanaJuego(VentanaBase):
         
         # Botones
         self.btn_solucion = QPushButton("Mostrar Solución")
-        self.btn_confirmar_inicio = QPushButton("Confirmar Inicio")
+        self.btn_confirmar_inicio = QPushButton("Jugar")
         self.btn_confirmar_inicio.setObjectName("btn_confirmar")
         self.btn_confirmar_inicio.clicked.connect(self.iniciar_movimiento)
         self.area_principal_layout.addWidget(self.btn_confirmar_inicio)
@@ -39,30 +39,26 @@ class VentanaJuego(VentanaBase):
         self.area_principal_layout.addWidget(self.btn_solucion)
         
         # Eventos
-        self.grid_widget.mousePressEvent = self.seleccionar_celda
+       
         
         # Conexiones
         self.btn_guardar.clicked.connect(self.guardar_laberinto)
         self.btn_cargar.clicked.connect(self.cargar_laberinto)
-        
-        self.inicializar_laberinto()
+        self.dibujar_laberinto()
+   
     
-    def seleccionar_celda(self, event):
-        """Selecciona la celda de inicio si el juego no ha comenzado"""
-        if self.juego_activo:
-            return  # No permitir selección durante el juego
-
-        pos = event.position().toPoint()
-        pos = self.grid_widget.mapToScene(pos)
-        col = int(pos.x() // 30)
-        fila = int(pos.y() // 30)
-
-        if 0 <= fila < self.filas and 0 <= col < self.columnas:
-            if event.button() == Qt.LeftButton:
-                self.inicio = (fila, col)
-                self.dibujar_laberinto()
+    
     
     def iniciar_movimiento(self):
+        self.trail_items.clear()
+        self.dibujar_laberinto()
+        self.inicio =self.laberinto.puntoFInal()
+        if self.inicio == self.fin:
+            self.iniciar_movimiento(self)
+    
+            
+      
+        self.btn_confirmar_inicio.setEnabled(False)
         """Activa el modo de movimiento del jugador"""
         if self.laberinto.datos[self.inicio[0]][self.inicio[1]] == 0:
             QMessageBox.warning(self, "Error", "La posición inicial debe estar en un pasillo (celda blanca)")
@@ -72,21 +68,14 @@ class VentanaJuego(VentanaBase):
         self.posicion_actual = self.inicio
         self.dibujar_laberinto()  # Redibujar con el jugador
         self.grid_widget.setFocus()  # Asegura que reciba eventos de teclado
-
-    def inicializar_laberinto(self):
-        """Crea un nuevo laberinto con camino garantizado"""
-        self.laberinto = matriz(self.filas, self.columnas)
-        # Asegurar que inicio y fin sean caminos transitables
-        self.laberinto.datos[self.inicio[0]][self.inicio[1]] = 1
-        self.laberinto.datos[self.fin[0]][self.fin[1]] = 1
-        self.dibujar_laberinto()
+        
+      
 
     def dibujar_laberinto(self):
         """Dibuja el laberinto en la escena"""
         self.scene.clear()
         cell_size = 30
         pen = QPen(Qt.black)
-
         # Dibuja las celdas
         for i in range(self.filas):
             for j in range(self.columnas):
@@ -104,10 +93,10 @@ class VentanaJuego(VentanaBase):
         for paso in self.trail_items:
             i, j = paso
             self.scene.addRect(j * cell_size, i * cell_size, cell_size, cell_size, pen, QColor(243, 156, 18, 150))
-
-        # Marcar inicio y fin
-        i, j = self.inicio
-        self.scene.addEllipse(j * cell_size + 5, i * cell_size + 5, 20, 20, pen, QColor("#27ae60"))
+        if self.inicio is not None:
+            # Marcar inicio y fin
+            i, j = self.inicio
+            self.scene.addEllipse(j * cell_size + 5, i * cell_size + 5, 20, 20, pen, QColor("#27ae60"))
 
         i, j = self.fin
         self.scene.addEllipse(j * cell_size + 5, i * cell_size + 5, 20, 20, pen, QColor("#e74c3c"))
@@ -117,32 +106,15 @@ class VentanaJuego(VentanaBase):
             i, j = self.posicion_actual
             self.scene.addEllipse(j * cell_size + 8, i * cell_size + 8, 14, 14, QPen(Qt.black), QColor("#f1c40f"))
 
-    def seleccionar_celda(self, event):
-         """Permite seleccionar celdas para inicio/fin antes de iniciar el juego"""
-         if self.juego_activo:
-             return  # No permitir cambiar inicio/fin después de iniciar el juego
- 
-         pos = self.grid_widget.mapToScene(event.pos())
-         col = int(pos.x() // 30)
-         fila = int(pos.y() // 30)
- 
-         if 0 <= fila < self.filas and 0 <= col < self.columnas:
-             if self.laberinto.datos[fila][col] == 1:
-                 if event.button() == Qt.LeftButton:
-                     self.inicio = (fila, col)
-                 elif event.button() == Qt.RightButton:
-                     self.fin = (fila, col)
-                 self.dibujar_laberinto()
-             else:
-                 QMessageBox.warning(self, "Error", "¡Ubicación inválida! Solo puedes seleccionar pasillos.")
-    
     def mostrar_solucion(self):
-        
+        self.btn_confirmar_inicio.setEnabled(True)
         if not self.laberinto:
             return
          # Limpiar solución anterior
     
+        self.scene.clear()
         self.items_solucion.clear()
+        self.dibujar_laberinto()
         # Resolver laberinto
         resultado = self.laberinto.solucionarMatriz(list(self.inicio), list(self.fin))
         if resultado:
@@ -204,6 +176,7 @@ class VentanaJuego(VentanaBase):
                 self.dibujar_laberinto()
 
                 if self.posicion_actual == self.fin:
+                    self.btn_confirmar_inicio.setEnabled(True)
                     QMessageBox.information(self, "¡Llegaste!", "¡Has llegado al final del laberinto!")
                     self.juego_activo = False
 

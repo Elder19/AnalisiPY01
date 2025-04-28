@@ -5,11 +5,12 @@ from Backend.matriz import matriz
 from Interfaz.Ventana_base import VentanaBase
 
 class VentanaJuego(VentanaBase):
-    def __init__(self, parent=None):
-        super().__init__(parent, "Laberinto Mágico - Juego")
-        self.filas = 20
-        self.columnas = 20
-        self.laberinto = matriz(self.filas, self.columnas)
+    def __init__(self, laberinto=None, parent=None):
+        super().__init__(parent)
+        if laberinto is not None: 
+            self.laberinto = laberinto
+            self.filas = laberinto.filas
+            self.columnas = laberinto.columnas
         self.inicio = (0, 0)
         self.fin = self.laberinto.puntoFInal()
        

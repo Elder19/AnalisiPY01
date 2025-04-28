@@ -232,7 +232,7 @@ class VentanaLaberinto(QMainWindow):
         """)
 
     def iniciar_juego(self):
-        self.ventana_juego = VentanaJuego(self)
+        self.ventana_juego = VentanaJuego(laberinto=self.laberinto,parent=self)
         self.ventana_juego.showFullScreen()
 
     def mostrar_resolucion(self):

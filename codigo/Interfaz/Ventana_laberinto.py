@@ -7,6 +7,8 @@ from PySide6.QtCore import Qt
 from Ventana_juego import VentanaJuego
 from Ventana_resolucion import VentanaResolucion
 from Backend.matriz import matriz
+from Ventana_cargar_soluciones import VentanaCargarSoluciones
+
 
 
 class VentanaLaberinto(QMainWindow):
@@ -36,6 +38,9 @@ class VentanaLaberinto(QMainWindow):
         """)
         self.layout_principal.addWidget(self.titulo)
 
+        # --> Aquí agregamos el espacio extra
+        self.layout_principal.addSpacing(120)
+
         # Botones de Juego y Resolucion
         self.contenedor_botones = QWidget(self.widget_central)
         self.contenedor_botones_layout = QHBoxLayout(self.contenedor_botones)
@@ -51,6 +56,7 @@ class VentanaLaberinto(QMainWindow):
         self.contenedor_botones_layout.addWidget(self.boton_resolucion)
         self.contenedor_botones_layout.addStretch()
 
+
         self.layout_principal.addWidget(self.contenedor_botones)
 
         # Texto selecciona tamaño
@@ -59,7 +65,7 @@ class VentanaLaberinto(QMainWindow):
         self.texto_tamano.setStyleSheet("""
             font-size: 24px;
             color: #ecf0f1;
-            margin-top: 240px;
+            margin-top: 100px;
         """)
         self.layout_principal.addWidget(self.texto_tamano)
 
@@ -76,6 +82,7 @@ class VentanaLaberinto(QMainWindow):
         self.boton15 = QPushButton("15x15", objectName="mostrar_resolucion3")
         self.boton20 = QPushButton("20x20", objectName="mostrar_resolucion4")
         self.boton25 = QPushButton("25x25", objectName="mostrar_resolucion5")
+        self.botonCarg = QPushButton("Cargar Soluciones", objectName="cargar_resoluciones")
 
         self.boton5.clicked.connect(lambda: self.crearLAB(5, 5))
         self.boton10.clicked.connect(lambda: self.crearLAB(10, 10))
@@ -84,6 +91,7 @@ class VentanaLaberinto(QMainWindow):
         self.boton25.clicked.connect(lambda: self.crearLAB(25, 25))
 
         self.MatrizT.addWidget(self.boton5, 0, 0)
+        self.MatrizT.addWidget(self.botonCarg, 0, 1)
         self.MatrizT.addWidget(self.boton10,1, 0)
         self.MatrizT.addWidget(self.boton15, 1, 1)
         self.MatrizT.addWidget(self.boton20, 2, 0)
@@ -91,13 +99,26 @@ class VentanaLaberinto(QMainWindow):
 
         self.layout_principal.addWidget(self.BotonesTamaño, alignment=Qt.AlignBottom)
 
+        self.botonCarg.clicked.connect(self.mostrar_cargar_soluciones)
+
         # Estilos de botones de tamaño
-        botones = [self.boton5, self.boton10, self.boton15, self.boton20, self.boton25]
+        botones = [self.boton5, self.boton10, self.boton15, self.boton20, self.boton25, self.botonCarg]
         for boton in botones:
             boton.setStyleSheet("""
                 font-size: 18px;
                 padding: 12px;
                 background-color: #27ae60;
+                color: white;
+                border-radius: 10px;
+                font-weight: bold;
+            """)
+
+        botones = [self.botonCarg]
+        for boton in botones:
+            boton.setStyleSheet("""
+                font-size: 18px;
+                padding: 12px;
+                background-color: #105302;
                 color: white;
                 border-radius: 10px;
                 font-weight: bold;
@@ -118,10 +139,16 @@ class VentanaLaberinto(QMainWindow):
             
 
     def iniciar_juego(self):
+        if self.laberinto is None:
+            QMessageBox.warning(self, "Advertencia", "Debes seleccionar una dimensión de laberinto antes de jugar.")
+            return
         self.ventana_juego = VentanaJuego(laberinto=self.laberinto, parent=self)
         self.ventana_juego.showFullScreen()
 
     def mostrar_resolucion(self):
+        if self.laberinto is None:
+            QMessageBox.warning(self, "Advertencia", "Debes seleccionar una dimensión de laberinto antes de jugar.")
+            return
         self.ventana_resolucion = VentanaResolucion(laberinto=self.laberinto, parent=self)
         self.ventana_resolucion.showFullScreen()
 
@@ -140,6 +167,11 @@ class VentanaLaberinto(QMainWindow):
             )
             if respuesta == QMessageBox.Yes:
                 self.close()
+
+    def mostrar_cargar_soluciones(self):
+        self.ventana_cargar = VentanaCargarSoluciones(self)
+        self.ventana_cargar.show()
+
 
 
 if __name__ == "__main__":

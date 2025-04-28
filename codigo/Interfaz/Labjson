@@ -5,11 +5,7 @@ from PySide6.QtGui import QPen, QColor
 from Backend.matriz import matriz
 from Interfaz.Ventana_base import VentanaBase
 
-def guardar_laberinto(self):
-        """Guarda el laberinto actual"""
-        if self.laberinto:
-            self.laberinto.guardarMatriz()
-            QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
+
     
 def cargar_laberinto(self):
         """Carga un laberinto guardado"""

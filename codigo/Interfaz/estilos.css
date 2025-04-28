@@ -62,6 +62,40 @@ QPushButton {
     background-color: #d35400;
 }
 
+
+#Avanzar, #Retroceder {
+    min-width: 50px;
+    min-height: 50px;
+    max-width: 50px;
+    max-height: 50px;
+    padding: 20px 40px; 
+}
+
+/* Botón avanzar */
+#Avanzar {
+    background-color: #27ae60;
+}
+
+#Avanzar:hover {
+    background-color: #86dd0c;
+}
+
+#Avanzar:pressed {
+    background-color: #219955;
+}
+
+/* Botón retroceder  */
+#Retroceder {
+    background-color: #e67e22;
+}
+
+#Retroceder:hover {
+    background-color: #f39c12;
+}
+
+#Retroceder:pressed {
+    background-color: #d35400;
+}
 /* Estilos para la ventana de juego */
 QGraphicsView {
     background-color: #ecf0f1;

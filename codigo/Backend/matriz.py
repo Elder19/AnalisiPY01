@@ -135,9 +135,8 @@ class matriz:
         jm.escribirMatriz(datos)
         return True
 
-    def CargarMatriz(self):
+    def CargarMatriz(self,datos):
         """Carga una matriz desde JSON"""
-        datos = jm.cargarDatos()
         if datos and "matriz" in datos:
             self.matrizO = datos["matriz"]
             self.datos = [fila.copy() for fila in self.matrizO]

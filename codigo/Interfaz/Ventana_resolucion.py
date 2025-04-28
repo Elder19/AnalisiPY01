@@ -41,7 +41,7 @@ class VentanaResolucion(VentanaBase):
         
         # Conexiones
         self.btn_guardar.clicked.connect(self.guardar_laberinto)
-        self.btn_cargar.clicked.connect(self.cargar_laberinto)
+       
         
         self.dibujar_laberinto()
     
@@ -150,13 +150,3 @@ class VentanaResolucion(VentanaBase):
             self.laberinto.guardarMatriz()
             QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
     
-    def cargar_laberinto(self):
-        """Carga un laberinto guardado"""
-        try:
-            self.laberinto = matriz(1, 1)  # Tamaño dummy
-            self.laberinto.CargarMatriz()
-            self.filas = len(self.laberinto.datos)
-            self.columnas = len(self.laberinto.datos[0])
-            self.dibujar_laberinto()
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"No se pudo cargar el laberinto:\n{str(e)}")

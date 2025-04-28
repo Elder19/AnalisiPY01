@@ -34,12 +34,9 @@ class VentanaBase(QMainWindow):
         self.btn_inicio.setObjectName("btn_menu")
         self.btn_guardar = QPushButton("Guardar Laberinto")
         self.btn_guardar.setObjectName("btn_menu")
-        self.btn_cargar = QPushButton("Cargar Laberinto")
-        self.btn_cargar.setObjectName("btn_menu")
-
+      
         self.menu_layout.addWidget(self.btn_inicio)
         self.menu_layout.addWidget(self.btn_guardar)
-        self.menu_layout.addWidget(self.btn_cargar)
         self.menu_layout.addStretch()
 
         # Botón hamburguesa

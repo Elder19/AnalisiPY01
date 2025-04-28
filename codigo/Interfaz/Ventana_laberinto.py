@@ -115,9 +115,9 @@ class VentanaLaberinto(QMainWindow):
         self.boton5 = QPushButton("5x5", objectName="mostrar_resolucion1")
         self.boton = QPushButton("10x10", objectName="mostrar_resolucion2")
         self.boton1 = QPushButton("15x15", objectName="mostrar_resolucion3")
-        self.boton2 = QPushButton("x20x20", objectName="mostrar_resolucion4")
+        self.boton2 = QPushButton("20x20", objectName="mostrar_resolucion4")
         self.boton3 = QPushButton("25x25", objectName="mostrar_resolucion5")
-        
+        #llamar a la funcion crearLAB
         self.boton5.clicked.connect(lambda: self.crearLAB(5,5))
         self.boton.clicked.connect(lambda: self.crearLAB(10,10))
         self.boton1.clicked.connect(lambda: self.crearLAB(15,15))
@@ -129,15 +129,14 @@ class VentanaLaberinto(QMainWindow):
         self.MatrizT.addWidget(self.boton1, 1, 0)  # Fila 0, Columna 1
         self.MatrizT.addWidget(self.boton2, 1, 1)  # Fila 1, Columna 0
         self.MatrizT.addWidget(self.boton3, 2, 0)  # Fila 1, Columna 1
-
-
+        
     # Ajustar estilos opcionales
         self.boton.setStyleSheet("font-size: 14px; padding: 0px; background-color: #27ae60;width: 0px;  ")
         self.boton1.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px;")
         self.boton2.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px; ")
         self.boton3.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px;")
         self.boton5.setStyleSheet("font-size: 14px; padding: 1px; background-color: #27ae60; width: 0px;")
-        self.BotonesTamaño.setStyleSheet("background-color: #270;width: 200px;")
+        #self.BotonesTamaño.setStyleSheet("background-color: #270;width: 200px;")
 
     def resizeEvent(self, event):
         """Reajustar posiciones si la ventana cambia de tamaño"""

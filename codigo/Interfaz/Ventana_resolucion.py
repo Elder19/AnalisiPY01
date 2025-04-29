@@ -87,7 +87,8 @@ class VentanaResolucion(VentanaBase):
         col = int(pos.x() // 30)
         fila = int(pos.y() // 30)
        
-        if 0 <= fila < self.filas and 0 <= col < self.columnas:
+                
+        if 0 <= fila < self.filas and 0 <= col < self.columnas and (fila, col) != self.fin:
             if self.laberinto.datos[fila][col] == 1: 
                 if event.button() == Qt.LeftButton:
                     self.inicio = (fila, col)
@@ -147,6 +148,13 @@ class VentanaResolucion(VentanaBase):
     def guardar_laberinto(self):
         """Guarda el laberinto actual"""
         if self.laberinto:
-            self.laberinto.guardarMatriz()
-            QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
+            resultado = self.laberinto.guardarMatriz()
+
+            if resultado:
+                QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
+            else:
+         
+                QMessageBox.information(self, "Guardado", "⚠️ El laberinto ya existe y no se guardó")
+        else:
+            QMessageBox.warning(self, "Error", "No hay laberinto para guardar")
     

@@ -182,7 +182,13 @@ class VentanaJuego(VentanaBase):
     def guardar_laberinto(self):
         """Guarda el laberinto actual"""
         if self.laberinto:
-            self.laberinto.guardarMatriz()
-            QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
-    
+            resultado = self.laberinto.guardarMatriz()
+
+            if resultado:
+                QMessageBox.information(self, "Guardado", "Laberinto guardado correctamente")
+            else:
+         
+                QMessageBox.information(self, "Guardado", "⚠️ El laberinto ya existe y no se guardó")
+        else:
+            QMessageBox.warning(self, "Error", "No hay laberinto para guardar")
     

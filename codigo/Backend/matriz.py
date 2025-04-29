@@ -59,11 +59,11 @@ class matriz:
         Inicio=time.time()
         if not (0 <= fila_inicio < self.filas and 0 <= col_inicio < self.columnas and
             0 <= fila_final < self.filas and 0 <= col_final < self.columnas):
-            print("Puntos de inicio o fin están fuera de los límites.")
+            
             return False
       
         if self.datos[fila_inicio][col_inicio] != 1 or self.datos[fila_final][col_final] != 1:
-            print("Puntos de inicio o fin no son transitables.")
+         
             return False
      
         
@@ -75,7 +75,7 @@ class matriz:
                 return
 
             if (fila, columna) in visitado:
-                return 
+                return  
             camino.append((fila, columna))
             visitado.add((fila, columna))
             if [fila, columna] == [fila_final, col_final]:
@@ -89,7 +89,7 @@ class matriz:
                      solucionarMatriz2(fila+1,columna, camino, visitado)
                 if fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 :
                     solucionarMatriz2(fila-1,columna, camino, visitado)
-               
+                
    
        
             camino.pop()
@@ -124,15 +124,21 @@ class matriz:
         return mejor, peor
 
     def guardarMatriz(self):
-        """Guarda la matriz original en JSON"""
-       
+        EXISTENTES = jm.cargarDatos()
+
         datos = {
             "filas": self.filas,
             "columnas": self.columnas,
             "matriz": self.matrizO
         }
-      
-        jm.escribirMatriz(datos)
+        
+        for matriz in EXISTENTES:
+            if isinstance(matriz, dict) and matriz.get("matriz") == datos["matriz"]:
+           
+                return False  # Ya existe
+
+        EXISTENTES.append(datos)
+        jm.escribirMatriz(EXISTENTES)
         return True
 
     def CargarMatriz(self,datos):

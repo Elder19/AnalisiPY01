@@ -71,7 +71,7 @@ class VentanaBase(QMainWindow):
         self.menu_animation.setStartValue(width)
         self.menu_animation.setEndValue(200 if width == 0 else 0)
         self.menu_animation.start()
-
+        
     def volver_inicio(self):
         """Regresa a la ventana principal"""
         if self.parent():

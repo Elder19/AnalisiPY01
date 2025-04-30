@@ -2,6 +2,7 @@ import random, time
 from Backend import JsonM as jm
 from PySide6.QtWidgets import QMessageBox
 
+
 class matriz:
     def __init__(self, filas, columnas):
         self.filas = filas
@@ -11,10 +12,24 @@ class matriz:
         self.soluciones = []
         self.mejor_camino = None
         self.peor_camino = None
-
+    """Escoje un numero ramdom
+    Args:
+    Returns:
+        int: a ramdom number between 0 and 1.
+    Raises:
+    """
     def numero(self):
         return random.randint(0, 1)
-
+    
+    
+    """create a matrix with walls and paths
+    Args:
+        filas (int): number of rows
+        columnas (int): number of columns
+    Returns:
+        List[List[int]]: a matrix with walls (0) and paths (1).
+    Raises:
+    """
     def crearMatriz(self, filas, columnas):
         # Inicializar todo como paredes (0)
         grid = [[0 for _ in range(columnas)] for _ in range(filas)]
@@ -34,6 +49,12 @@ class matriz:
         start_x, start_y = 0, 0
         grid[start_x][start_y] = 1
         dfs(start_x, start_y)
+        """make new street 
+        Args:
+        Returns:
+           List[List[int]]: a matrix with walls (0) and paths (1).
+        Raises:
+        """
         def sumaCaminos():
             for x in range(filas*columnas//10):
                 x,y=random.randint(1,filas-1), random.randint(1,columnas-1)
@@ -43,14 +64,15 @@ class matriz:
         sumaCaminos()
         return grid
     
-    
-    def mostrar(self):
-        resultado = "    " + " ".join(f"{j:2}" for j in range(self.columnas)) + "\n"
-        resultado += "   " + "---" * self.columnas + "\n"
-        for i, fila in enumerate(self.datos):
-            resultado += f"{i:2} | " + "  ".join(str(valor) for valor in fila) + "\n"
-        return resultado
-
+    """ Resolves the maze using dfs 
+        Args:
+            posicionO (tuple): starting position (row, column).
+            posFinalO (tuple): ending position (row, column).
+        Returns:
+           
+        Raises:
+            false if the positions are ivalid or exceeds margin matrix  
+        """
     def solucionarMatriz(self, posicionO, posFinalO):
         fila_inicio, col_inicio = posicionO
         fila_final, col_final = posFinalO
@@ -66,7 +88,18 @@ class matriz:
          
             return False
      
-        
+        """ Resolves the maze using dfs 
+        Args:
+            fila_inicio (int): starting row.
+            col_inicio (int): starting column.
+            camino (List[Tuple[int, int]]): current path.
+            visitado (Set[Tuple[int, int]]): visited positions.
+
+        Returns:
+           true if a solution is found, false otherwise.
+        Raises:
+            false if the positions are ivalid or exceeds margin matrix  
+        """
         def solucionarMatriz2(fila_inicio ,col_inicio,camino,visitado):
            # if len(todos_los_caminos) >=10:
                 #return
@@ -102,22 +135,14 @@ class matriz:
         else:
                 
                 return False
-      
-    def cambiarSigno(self, fila, columna, signo):
-        #Marca celdas del camino con números (2 para mejor, 3 para peor, etc.)
-        if 0 <= fila < self.filas and 0 <= columna < self.columnas:
-            self.datos[fila][columna] = signo
-        return self.datos[fila][columna]
-
-    def devolverSigno(self, fila, columna):
-        """Restaura una celda a su valor original (1)"""
-        if 0 <= fila < self.filas and 0 <= columna < self.columnas:
-            self.datos[fila][columna] = 1
-        return self.datos[fila][columna]
-
     
-               
-
+    """ save the matriz in a json file 
+        Args: datos  data to save.
+        Returns:
+           returns true if the matriz is save else false
+        Raises:
+            false if the positions are ivalid or exceeds margin matrix  
+        """
     def guardarMatriz(self):
         EXISTENTES = jm.cargarDatos()
 
@@ -135,7 +160,14 @@ class matriz:
         EXISTENTES.append(datos)
         jm.escribirMatriz(EXISTENTES)
         return True
-
+    """ Reed the matrix of json file 
+        Args:
+            
+        Returns:
+          true is the matrix is reed else false 
+        Raises:
+            
+        """
     def CargarMatriz(self,datos):
         """Carga una matriz desde JSON"""
         if datos and "matriz" in datos:
@@ -145,7 +177,14 @@ class matriz:
             self.columnas = datos.get("columnas", len(self.matrizO[0]) if self.filas > 0 else 0)
             return True
         return False
-
+    """ Reseth the matrix to original  state
+        Args:
+        
+        Returns:
+           
+        Raises:
+           
+        """
     def resetearMatriz(self):
         """Restaura la matriz a su estado original"""
         self.datos = [fila.copy() for fila in self.matrizO]

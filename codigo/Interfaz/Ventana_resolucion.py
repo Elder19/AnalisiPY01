@@ -139,7 +139,14 @@ class VentanaResolucion(VentanaBase):
             self.printearSolucion(0)            
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
-            
+        
+    """ draw the solution in the scene 
+        Args:
+            Nsolucion(int): position in the list of the maze 
+        Returns:
+           return the user looks the street to resolve the maze
+        Raises:
+        """
     def printearSolucion(self, Nsolucion):
             self.scene.clear()
             self.items_solucion.clear()
@@ -159,7 +166,13 @@ class VentanaResolucion(VentanaBase):
                 self.items_solucion.append(rect)
               
     
-
+    """ call clas matriz to execute guardarlaberinto
+        Args:
+            
+        Returns:
+           return QMessageBox if the maze is save else returns error 
+        Raises:
+        """
     def guardar_laberinto(self):
 
         """Guarda el laberinto actual"""
@@ -173,7 +186,13 @@ class VentanaResolucion(VentanaBase):
                 QMessageBox.information(self, "Guardado", "⚠️ El laberinto ya existe y no se guardó")
         else:
             QMessageBox.warning(self, "Error", "No hay laberinto para guardar")
-    
+    """ Call to printearSolucion  whith new position in the list to see other solutio
+        Args:
+            
+        Returns:
+           return printearSolucion(New position)
+        Raises:
+        """
     def siguiente_solucion(self):
         if self.contador== len(self.laberinto.soluciones)-1:
             self.contador=0

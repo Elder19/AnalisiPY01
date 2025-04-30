@@ -5,6 +5,8 @@ from Backend.matriz import matriz
 from Interfaz.Ventana_base import VentanaBase
 
 class VentanaJuego(VentanaBase):
+    """ constructor of the class contains the metrods to draw, botton and ecents 
+        """
     def __init__(self, laberinto=None, parent=None):
         super().__init__(parent)
         if laberinto is not None: 
@@ -51,7 +53,12 @@ class VentanaJuego(VentanaBase):
         self.dibujar_laberinto()
    
     
-    
+    """ make that user can use wasd to resolve the maze
+        Args:
+        Returns:
+        Raises:
+            QMessageBox if the position is not valid 
+        """
     
     def iniciar_movimiento(self):
         self.trail_items.clear()
@@ -73,7 +80,11 @@ class VentanaJuego(VentanaBase):
         self.dibujar_laberinto()  # Redibujar con el jugador
         self.grid_widget.setFocus()  # Asegura que reciba eventos de teclado
         
-      
+    """ draw the maza in the scene and the start and end points
+        Args:
+        Returns:
+        Raises:
+        """  
 
     def dibujar_laberinto(self):
         """Dibuja el laberinto en la escena"""
@@ -109,12 +120,26 @@ class VentanaJuego(VentanaBase):
         if self.juego_activo and self.posicion_actual:
             i, j = self.posicion_actual
             self.scene.addEllipse(j * cell_size + 8, i * cell_size + 8, 14, 14, QPen(Qt.black), QColor("#f1c40f"))
+    """ Call to printearSolucion  whith new position in the list to see other solutio
+        Args:
+            
+        Returns:
+           return printearSolucion(New position)
+        Raises:
+        """
     def siguiente_solucion(self):
         
         if self.contador== len(self.laberinto.soluciones)-1:
             self.contador=0
         self.contador+=1
         self.printearSolucion(self.contador)
+    """ call the class matrix to resolve the maze and save the solution in soliuciones
+        Args:
+        Returns:
+            printearSolucion: to draw the solution in the scene
+        Raises:
+            error if the maze is not possible to resolve
+        """        
     def mostrar_solucion(self):
         self.btn_confirmar_inicio.setEnabled(True)
       
@@ -127,7 +152,13 @@ class VentanaJuego(VentanaBase):
             self.printearSolucion(0)            
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
-            
+     """ draw the solution in the scene 
+        Args:
+            Nsolucion(int): position in the list of the maze 
+        Returns:
+           return the user looks the street to resolve the maze
+        Raises:
+        """        
     def printearSolucion(self, Nsolucion):
             self.scene.clear()
             self.items_solucion.clear()
@@ -145,7 +176,13 @@ class VentanaJuego(VentanaBase):
                 self.pen,QColor(52, 152, 219, 100) # Rojo semitransparente
                 )
                 self.items_solucion.append(rect)
-              
+    """ detect WASD keys to move the player in the maze
+        Args:
+           event: event to detect the key pressed
+        Returns:
+           return the user looks the street to resolve the maze
+        Raises:
+        """          
     def keyPressEvent(self, event):
         if not self.juego_activo or self.posicion_actual is None:
             return
@@ -178,7 +215,14 @@ class VentanaJuego(VentanaBase):
                     self.btn_confirmar_inicio.setEnabled(True)
                     QMessageBox.information(self, "¡Llegaste!", "¡Has llegado al final del laberinto!")
                     self.juego_activo = False
-
+     
+    """ call clas matriz to execute guardarlaberinto
+        Args:
+            
+        Returns:
+           return QMessageBox if the maze is save else returns error 
+        Raises:
+        """
     def guardar_laberinto(self):
         """Guarda el laberinto actual"""
         if self.laberinto:

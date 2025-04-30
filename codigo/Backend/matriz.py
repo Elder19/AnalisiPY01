@@ -158,11 +158,4 @@ class matriz:
         if self.datos[x][y]==1: 
             return x,y
         return self.puntoFInal()
-"""                      
-"falta validar puntos de partida y final validos, guardar matriz y mostrar los 3 casos: peor, mejor y promedio"
-m.CargarMatriz()
-print("Original:")
-print(m.mostrar())
-m.menuPartida()
-m.guardarMatriz()
-"""
+

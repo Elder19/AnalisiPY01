@@ -110,7 +110,7 @@ class VentanaJuego(VentanaBase):
             i, j = self.posicion_actual
             self.scene.addEllipse(j * cell_size + 8, i * cell_size + 8, 14, 14, QPen(Qt.black), QColor("#f1c40f"))
     def siguiente_solucion(self):
-        print("siguiente solucion")
+        
         if self.contador== len(self.laberinto.soluciones)-1:
             self.contador=0
         self.contador+=1

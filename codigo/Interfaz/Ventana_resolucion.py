@@ -4,9 +4,11 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPen, QColor
 from Backend.matriz import matriz
 from Interfaz.Ventana_base import VentanaBase
-
+import time
 
 class VentanaResolucion(VentanaBase):
+    """ constructor of the class contains the metrods to draw, botton and ecents 
+        """
     def __init__(self, laberinto=None, parent=None):
         super().__init__(parent)
         if laberinto is not None: 
@@ -50,7 +52,11 @@ class VentanaResolucion(VentanaBase):
         
         self.dibujar_laberinto()
     
-    
+    """ draw the maza in the scene and the start and end points
+        Args:
+        Returns:
+        Raises:
+        """
     def dibujar_laberinto(self):
         """Dibuja el laberinto en la escena"""
         self.scene.clear()
@@ -86,7 +92,13 @@ class VentanaResolucion(VentanaBase):
         if self.juego_activo and self.posicion_actual:
             i, j = self.posicion_actual
             self.scene.addEllipse(j * cell_size + 8, i * cell_size + 8, 14, 14, QPen(Qt.black), QColor("#f1c40f"))
-
+    """select the cell to start point
+        Args:
+        Returns:
+           return datos in a list
+        Raises:
+            execpt if  FileNotFoundError,JSONDecodeError
+        """
     def seleccionar_celda(self, event):
         """Permite seleccionar celdas para inicio/fin"""
         pos = self.grid_widget.mapToScene(event.pos())
@@ -104,7 +116,13 @@ class VentanaResolucion(VentanaBase):
             else:
                 QMessageBox.warning(self, "Error", "¡Ubicación inválida!")
 
-            
+    """ call the class matrix to resolve the maze and save the solution in soliuciones
+        Args:
+        Returns:
+            printearSolucion: to draw the solution in the scene
+        Raises:
+            error if the maze is not possible to resolve
+        """        
     def mostrar_solucion(self):
             
         if not self.laberinto:
@@ -132,7 +150,7 @@ class VentanaResolucion(VentanaBase):
             self.camino =self.laberinto.soluciones[Nsolucion]
             
             for paso in range(len(self.camino)):
-                       
+                #time.sleep(0.5) 
                 i, j = self.camino[paso]
                 rect = self.scene.addRect(
                 j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size,

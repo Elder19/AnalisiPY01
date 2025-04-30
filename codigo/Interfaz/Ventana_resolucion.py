@@ -13,11 +13,11 @@ class VentanaResolucion(VentanaBase):
             self.laberinto = laberinto
             self.filas = laberinto.filas
             self.columnas = laberinto.columnas
-        
+            self.resultado = []
         self.inicio = (0, 0)
         self.fin = self.laberinto.puntoFInal()
-       
-
+        self.contador = 0
+    
         self.juego_activo = False
         self.posicion_actual = None
         self.trail_items = []
@@ -36,6 +36,11 @@ class VentanaResolucion(VentanaBase):
         self.btn_solucion.clicked.connect(self.mostrar_solucion)
         self.area_principal_layout.addWidget(self.btn_solucion)
         
+        self.btn_solucion2 = QPushButton("siguiente Solución")
+        self.btn_solucion2.setObjectName("btn_solucion")
+        self.btn_solucion2.clicked.connect(self.siguiente_solucion)
+        self.area_principal_layout.addWidget(self.btn_solucion2)
+        self.btn_solucion2.setEnabled(False)
         # Eventos
         self.grid_widget.mousePressEvent = self.seleccionar_celda
         
@@ -44,6 +49,7 @@ class VentanaResolucion(VentanaBase):
        
         
         self.dibujar_laberinto()
+    
     
     def dibujar_laberinto(self):
         """Dibuja el laberinto en la escena"""
@@ -110,42 +116,34 @@ class VentanaResolucion(VentanaBase):
         # Resolver laberinto
         resultado = self.laberinto.solucionarMatriz(list(self.inicio), list(self.fin))
         if resultado:
+            self.resultado = resultado
+            self.btn_solucion2.setEnabled(True)
+            self.printearSolucion(0)            
+        else:
+            QMessageBox.warning(self, "Error", "¡No hay solución posible!")
+            
+    def printearSolucion(self, Nsolucion):
             self.scene.clear()
             self.items_solucion.clear()
             self.dibujar_laberinto()
             # Dibujar solución
-            cell_size = 30
-            pen = QPen(QColor("#3498db"), 2)
-            caminos = self.laberinto.soluciones
-            tomados=[]
-            casillas = []
-            if caminos:
-                camino = min(caminos, key=len)
-                if not camino in tomados:
-                    for paso in camino:
-                        i, j = paso
-                        casillas.append(paso)
-                        rect = self.scene.addRect(
-                            j*cell_size, i*cell_size, cell_size, cell_size,
-                            pen,QColor(52, 152, 219, 100) # Rojo semitransparente
-                        )
-                tomados.append(camino)  
-                camino = max(caminos, key=len)
-                    
-                if not camino in tomados:
-                    for paso in camino:
-                        i, j = paso
-                        #if not paso in casillas:   
-                        rect = self.scene.addRect(
-                            j*cell_size, i*cell_size, cell_size, cell_size,
-                            pen,QColor(255, 0, 0, 100) # Rojo semitransparente
-                            ) 
-                tomados.append(camino)
+            self.cell_size = 30
+            self.pen = QPen(QColor("#3498db"), 2)
+            self.camino =self.laberinto.soluciones[Nsolucion]
+            
+            for paso in range(len(self.camino)):
+                       
+                i, j = self.camino[paso]
+                rect = self.scene.addRect(
+                j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size,
+                self.pen,QColor(52, 152, 219, 100) # Rojo semitransparente
+                )
                 self.items_solucion.append(rect)
-        else:
-            QMessageBox.warning(self, "Error", "¡No hay solución posible!")
+              
+    
 
     def guardar_laberinto(self):
+
         """Guarda el laberinto actual"""
         if self.laberinto:
             resultado = self.laberinto.guardarMatriz()
@@ -158,3 +156,8 @@ class VentanaResolucion(VentanaBase):
         else:
             QMessageBox.warning(self, "Error", "No hay laberinto para guardar")
     
+    def siguiente_solucion(self):
+        if self.contador== len(self.laberinto.soluciones)-1:
+            self.contador=0
+        self.contador+=1
+        self.printearSolucion(self.contador)

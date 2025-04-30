@@ -90,17 +90,17 @@ class matriz:
                 if fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 :
                     solucionarMatriz2(fila-1,columna, camino, visitado)
                 
-   
+                
        
             camino.pop()
             visitado.remove((fila, columna))
         solucionarMatriz2(fila_inicio, col_inicio, [], set())
         if  len (todos_los_caminos)>0: 
-                self.mejor_camino, self.peor_camino = self.seleccionSolucion(todos_los_caminos)
                 self.soluciones = todos_los_caminos
+                self.soluciones.sort(key=len)
                 return True
         else:
-                print("no hay solucion en el punto de partida") 
+                
                 return False
       
     def cambiarSigno(self, fila, columna, signo):
@@ -115,13 +115,8 @@ class matriz:
             self.datos[fila][columna] = 1
         return self.datos[fila][columna]
 
-    def seleccionSolucion(self, caminos):
-        """Identifica el mejor y peor camino"""
-        if not caminos:
-            return None, None
-        mejor = min(caminos, key=len)
-        peor = max(caminos, key=len)
-        return mejor, peor
+    
+               
 
     def guardarMatriz(self):
         EXISTENTES = jm.cargarDatos()

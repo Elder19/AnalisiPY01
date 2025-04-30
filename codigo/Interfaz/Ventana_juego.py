@@ -13,7 +13,7 @@ class VentanaJuego(VentanaBase):
             self.columnas = laberinto.columnas
         self.inicio = None
         self.fin = self.laberinto.puntoFInal()
-        
+        self.contador = 0
 
         self.juego_activo = False
         self.posicion_actual = None
@@ -33,11 +33,16 @@ class VentanaJuego(VentanaBase):
         self.btn_confirmar_inicio.setObjectName("btn_confirmar")
         self.btn_confirmar_inicio.clicked.connect(self.iniciar_movimiento)
         self.area_principal_layout.addWidget(self.btn_confirmar_inicio)
-
+        
         self.btn_solucion.setObjectName("btn_solucion")
         self.btn_solucion.clicked.connect(self.mostrar_solucion)
         self.area_principal_layout.addWidget(self.btn_solucion)
         
+        self.btn_solucion2 = QPushButton("siguiente Solución")
+        self.btn_solucion2.setObjectName("btn_solucion")
+        self.btn_solucion2.clicked.connect(self.siguiente_solucion)
+        self.area_principal_layout.addWidget(self.btn_solucion2)
+        self.btn_solucion2.setEnabled(False)
         # Eventos
        
         
@@ -104,48 +109,43 @@ class VentanaJuego(VentanaBase):
         if self.juego_activo and self.posicion_actual:
             i, j = self.posicion_actual
             self.scene.addEllipse(j * cell_size + 8, i * cell_size + 8, 14, 14, QPen(Qt.black), QColor("#f1c40f"))
-
+    def siguiente_solucion(self):
+        print("siguiente solucion")
+        if self.contador== len(self.laberinto.soluciones)-1:
+            self.contador=0
+        self.contador+=1
+        self.printearSolucion(self.contador)
     def mostrar_solucion(self):
         self.btn_confirmar_inicio.setEnabled(True)
+      
         if not self.laberinto:
             return
-         # Limpiar solución anterior
-    
-        self.scene.clear()
-        self.items_solucion.clear()
-        self.dibujar_laberinto()
-        # Resolver laberinto
         resultado = self.laberinto.solucionarMatriz(list(self.inicio), list(self.fin))
         if resultado:
-            # Dibujar solución
-            cell_size = 30
-            pen = QPen(QColor("#3498db"), 2)
-            caminos = self.laberinto.soluciones
-            tomados=[]
-            if caminos:
-                camino = min(caminos, key=len)
-                if not camino in tomados:
-                    for paso in camino:
-                        i, j = paso
-                        rect = self.scene.addRect(
-                            j*cell_size, i*cell_size, cell_size, cell_size,
-                            pen,QColor(52, 152, 219, 100) # Rojo semitransparente
-                        )
-                tomados.append(camino)  
-                camino = max(caminos, key=len)
-                    
-                if not camino in tomados:
-                    for paso in camino:
-                        i, j = paso
-                        rect = self.scene.addRect(
-                            j*cell_size, i*cell_size, cell_size, cell_size,
-                            pen,QColor(255, 0, 0, 100) # Rojo semitransparente
-                        ) 
-                tomados.append(camino)
-                self.items_solucion.append(rect)
+            self.resultado = resultado
+            self.btn_solucion2.setEnabled(True)
+            self.printearSolucion(0)            
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
-
+            
+    def printearSolucion(self, Nsolucion):
+            self.scene.clear()
+            self.items_solucion.clear()
+            self.dibujar_laberinto()
+            # Dibujar solución
+            self.cell_size = 30
+            self.pen = QPen(QColor("#3498db"), 2)
+            self.camino =self.laberinto.soluciones[Nsolucion]
+            
+            for paso in range(len(self.camino)):
+                       
+                i, j = self.camino[paso]
+                rect = self.scene.addRect(
+                j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size,
+                self.pen,QColor(52, 152, 219, 100) # Rojo semitransparente
+                )
+                self.items_solucion.append(rect)
+              
     def keyPressEvent(self, event):
         if not self.juego_activo or self.posicion_actual is None:
             return

@@ -34,7 +34,7 @@ class VentanaLaberinto(QMainWindow):
         self.titulo.setStyleSheet("""
             font-size: 36px;
             font-weight: bold;
-            color: #ecf0f1;
+            color: #B2C9AD;
         """)
         self.layout_principal.addWidget(self.titulo)
 
@@ -64,7 +64,7 @@ class VentanaLaberinto(QMainWindow):
         self.texto_tamano.setAlignment(Qt.AlignCenter)
         self.texto_tamano.setStyleSheet("""
             font-size: 24px;
-            color: #ecf0f1;
+            color: #d4ffdb;
             margin-top: 100px;
         """)
         self.layout_principal.addWidget(self.texto_tamano)
@@ -107,7 +107,7 @@ class VentanaLaberinto(QMainWindow):
             boton.setStyleSheet("""
                 font-size: 18px;
                 padding: 12px;
-                background-color: #27ae60;
+                background-color: #91AC8F;
                 color: white;
                 border-radius: 10px;
                 font-weight: bold;
@@ -118,7 +118,7 @@ class VentanaLaberinto(QMainWindow):
             boton.setStyleSheet("""
                 font-size: 18px;
                 padding: 12px;
-                background-color: #105302;
+                background-color: #66785F;
                 color: white;
                 border-radius: 10px;
                 font-weight: bold;

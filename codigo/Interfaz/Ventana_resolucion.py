@@ -1,5 +1,4 @@
-
-from PySide6.QtWidgets import QPushButton, QGraphicsView, QGraphicsScene, QMessageBox
+from PySide6.QtWidgets import QPushButton, QGraphicsView, QGraphicsScene, QMessageBox, QHBoxLayout, QWidget
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPen, QColor
 from Backend.matriz import matriz
@@ -7,8 +6,7 @@ from Interfaz.Ventana_base import VentanaBase
 import time
 
 class VentanaResolucion(VentanaBase):
-    """ constructor of the class contains the metrods to draw, botton and ecents 
-        """
+    """ constructor of the class contains the methods to draw, buttons and events """
     def __init__(self, laberinto=None, parent=None):
         super().__init__(parent)
         if laberinto is not None: 
@@ -23,34 +21,41 @@ class VentanaResolucion(VentanaBase):
         self.juego_activo = False
         self.posicion_actual = None
         self.trail_items = []
-        
-        self.items_solucion = []  # ← después de self.fin = ...
+        self.items_solucion = []
 
         # Configuración inicial
         self.grid_widget = QGraphicsView()
         self.scene = QGraphicsScene()
         self.grid_widget.setScene(self.scene)
         self.area_principal_layout.addWidget(self.grid_widget)
-        
+
         # Botones
         self.btn_solucion = QPushButton("Mostrar Solución")
         self.btn_solucion.setObjectName("btn_solucion")
         self.btn_solucion.clicked.connect(self.mostrar_solucion)
-        self.area_principal_layout.addWidget(self.btn_solucion)
-        
-        self.btn_solucion2 = QPushButton("siguiente Solución")
+
+        self.btn_solucion2 = QPushButton("Siguiente Solución")
         self.btn_solucion2.setObjectName("btn_solucion")
         self.btn_solucion2.clicked.connect(self.siguiente_solucion)
-        self.area_principal_layout.addWidget(self.btn_solucion2)
         self.btn_solucion2.setEnabled(False)
+
+        # Layout horizontal para los botones
+        botones_layout = QHBoxLayout()
+        botones_layout.addWidget(self.btn_solucion)
+        botones_layout.addWidget(self.btn_solucion2)
+
+        botones_widget = QWidget()
+        botones_widget.setLayout(botones_layout)
+        self.area_principal_layout.addWidget(botones_widget)
+
         # Eventos
         self.grid_widget.mousePressEvent = self.seleccionar_celda
-        
+
         # Conexiones
         self.btn_guardar.clicked.connect(self.guardar_laberinto)
-       
-        
+
         self.dibujar_laberinto()
+
     
     """ draw the maza in the scene and the start and end points
         Args:
@@ -79,7 +84,7 @@ class VentanaResolucion(VentanaBase):
         pen = QPen(Qt.NoPen)
         for paso in self.trail_items:
             i, j = paso
-            self.scene.addRect(j * cell_size, i * cell_size, cell_size, cell_size, pen, QColor(243, 156, 18, 150))
+            self.scene.addRect(j * cell_size, i * cell_size, cell_size, cell_size, pen, QColor("#2c3e50"))
 
         # Marcar inicio y fin
         i, j = self.inicio
@@ -153,21 +158,18 @@ class VentanaResolucion(VentanaBase):
             self.dibujar_laberinto()
             # Dibujar solución
             self.cell_size = 30
-            self.pen = QPen(QColor("#3498db"), 2)
+            self.pen = QPen(QColor("#013708"), 2)
             
             self.camino =self.laberinto.soluciones[Nsolucion]
-            t = (Nsolucion % 20) / 19  
-            r = int(52 + (255 - 52) * t)         
-            g = int(152 * (1 - t))               
-            b = int(219 * (1 - t))              
-            color = QColor(r, g, b, 150)  
+            color_relleno = QColor("#013708")
+            color_relleno.setAlpha(150)  
                 
             for paso in range(len(self.camino)):
                 #time.sleep(0.5) 
                 i, j = self.camino[paso]
                 rect = self.scene.addRect(
                 j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size,
-                self.pen,color
+                self.pen,color_relleno
                 )
                 self.items_solucion.append(rect)
               

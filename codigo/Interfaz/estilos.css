@@ -1,20 +1,31 @@
 /* Estilos generales de la ventana */
 QMainWindow {
-    background-color: #2c3e50;
+    background-color: #4B5945;
+}
+
+/* Fondo del widget central */
+#widget_central {
+    background-color: #66785F;
+    background-image: url(ruta/a/tu/imagen.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 /* Frame de bienvenida */
 #frame_bienvenida {
-    background-color: #34495e;
+    background-color: rgba(145, 172, 143, 0.9); /* #91AC8F con transparencia */
     border-radius: 15px;
     padding: 20px;
+    border: 1px solid #B2C9AD;
 }
 
 /* Label de bienvenida */
 #label_bienvenida {
-    color: #ecf0f1;
-    font-size: 24px;
+    color: #ffffff;
+    font-size: 32px;
     font-weight: bold;
+    padding: 20px;
 }
 
 /* Contenedor de botones */
@@ -27,161 +38,147 @@ QPushButton {
     color: white;
     font-weight: bold;
     border: none;
-    padding: 50px 25px;
-    font-size: 28px;
+    padding: 40px 25px;
+    font-size: 24px;
     min-width: 150px;
     min-height: 50px;
-    border-radius: 10px;
+    border-radius: 12px;
     margin: 10px;
-    font-family: "Formula1-Bold", "Titillium Web", sans-serif;
+    font-family: "Segoe UI", "Titillium Web", sans-serif;
+    transition: background-color 0.3s ease;
 }
 
 /* Botón Juego */
 #boton_juego {
-    background-color: #27ae60;
+    background-color: #91AC8F;
 }
 
 #boton_juego:hover {
-    background-color: #2ecc71;
+    background-color: #B2C9AD;
 }
 
 #boton_juego:pressed {
-    background-color: #219955;
+    background-color: #66785F;
 }
 
 /* Botón Resolución */
 #boton_resolucion {
-    background-color: #e67e22;
+    background-color: #66785F;
 }
 
 #boton_resolucion:hover {
-    background-color: #f39c12;
+    background-color: #91AC8F;
 }
 
 #boton_resolucion:pressed {
-    background-color: #d35400;
+    background-color: #4B5945;
 }
 
-
+/* Botones Avanzar y Retroceder */
 #Avanzar, #Retroceder {
     min-width: 50px;
     min-height: 50px;
     max-width: 50px;
     max-height: 50px;
-    padding: 20px 40px; 
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-size: 18px;
+    color: white;
 }
 
-/* Botón avanzar */
+/* Botón Avanzar */
 #Avanzar {
-    background-color: #27ae60;
+    background-color: #91AC8F;
 }
 
 #Avanzar:hover {
-    background-color: #86dd0c;
+    background-color: #B2C9AD;
 }
 
 #Avanzar:pressed {
-    background-color: #219955;
+    background-color: #66785F;
 }
 
-/* Botón retroceder  */
+/* Botón Retroceder */
 #Retroceder {
-    background-color: #e67e22;
+    background-color: #66785F;
 }
 
 #Retroceder:hover {
-    background-color: #f39c12;
+    background-color: #91AC8F;
 }
 
 #Retroceder:pressed {
-    background-color: #d35400;
+    background-color: #4B5945;
 }
-/* Estilos para la ventana de juego */
+
+/* Estilo de la vista de juego */
 QGraphicsView {
-    background-color: #ecf0f1;
-    border: 2px solid #7f8c8d;
+    background-color: #ffffff;
+    border: 2px solid #B2C9AD;
 }
 
 /* Botón del menú hamburguesa */
 #btn_hamburguesa {
     font-size: 20px;
-    padding: 5px;
+    padding: 8px;
     min-width: 40px;
     min-height: 40px;
-    background-color: #3498db;
-    border-radius: 5px;
+    background-color: #91AC8F;
+    color: white;
+    border-radius: 6px;
 }
 
 #btn_hamburguesa:hover {
-    background-color: #2980b9;
+    background-color: #B2C9AD;
 }
 
 /* Menú lateral */
 #menu_widget {
-    background-color: #34495e;
-    border-right: 1px solid #2c3e50;
+    background-color: #4B5945;
+    border-right: 1px solid #66785F;
 }
 
 /* Botones del menú lateral */
 #btn_menu {
     background-color: transparent;
-    color: #ecf0f1;
+    color: white;
     padding: 15px;
     font-size: 16px;
     text-align: left;
     margin: 5px;
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
 #btn_menu:hover {
-    background-color: #3d566e;
+    background-color: #66785F;
 }
 
 #btn_menu:pressed {
-    background-color: #2c3e50;
+    background-color: #91AC8F;
 }
 
 /* Botón de solución */
 #btn_solucion {
-    background-color: #3498db;
+    background-color: #91AC8F;
     padding: 15px;
     font-size: 18px;
     margin: 10px;
+    border-radius: 8px;
 }
 
 #btn_solucion:hover {
-    background-color: #2980b9;
+    background-color: #B2C9AD;
 }
 
-/* Frame de bienvenida */
-#frame_bienvenida {
-    background-color: rgba(52, 73, 94, 0.8);
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px solid #7f8c8d;
+/* Botones de tamaño personalizado */
+#BotonesTamaño {
+    background-color: #91AC8F;
+    width: 200px;
+    border-radius: 10px;
+    color: white;
 }
-
-/* Label de bienvenida */
-#label_bienvenida {
-    color: #ecf0f1;
-    font-size: 32px;
-    font-weight: bold;
-    padding: 20px;
-}
-/* Fondo para el widget central */
-#widget_central {
-    background-image: url(ruta/a/tu/imagen.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-}
-
 
 #BotonesTamaño:hover {
-    background-color: #e71894;
-}
-
-#BotonesTamaño {
-    background-color: rgb(255, 19, 19);
-    width: 200px;
+    background-color: #B2C9AD;
 }

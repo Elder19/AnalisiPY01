@@ -1,12 +1,11 @@
-from PySide6.QtWidgets import QPushButton, QGraphicsView, QGraphicsScene, QMessageBox
+from PySide6.QtWidgets import QPushButton, QGraphicsView, QGraphicsScene, QMessageBox, QHBoxLayout, QWidget
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPen, QColor
+from PySide6.QtGui import QPen, QColor, QIcon, QPixmap
 from Backend.matriz import matriz
 from Interfaz.Ventana_base import VentanaBase
 
 class VentanaJuego(VentanaBase):
-    """ constructor of the class contains the metrods to draw, botton and ecents 
-        """
+    """ constructor of the class contains the methods to draw, buttons and events """
     def __init__(self, laberinto=None, parent=None):
         super().__init__(parent)
         if laberinto is not None: 
@@ -20,34 +19,38 @@ class VentanaJuego(VentanaBase):
         self.juego_activo = False
         self.posicion_actual = None
         self.trail_items = []
-        
-        self.items_solucion = []  # ← después de self.fin = ...
+        self.items_solucion = []
 
         # Configuración inicial
         self.grid_widget = QGraphicsView()
         self.scene = QGraphicsScene()
         self.grid_widget.setScene(self.scene)
         self.area_principal_layout.addWidget(self.grid_widget)
-        
+
         # Botones
-        self.btn_solucion = QPushButton("Mostrar Solución")
         self.btn_confirmar_inicio = QPushButton("Jugar")
         self.btn_confirmar_inicio.setObjectName("btn_confirmar")
         self.btn_confirmar_inicio.clicked.connect(self.iniciar_movimiento)
-        self.area_principal_layout.addWidget(self.btn_confirmar_inicio)
-        
+
+        self.btn_solucion = QPushButton("Mostrar Solución")
         self.btn_solucion.setObjectName("btn_solucion")
         self.btn_solucion.clicked.connect(self.mostrar_solucion)
-        self.area_principal_layout.addWidget(self.btn_solucion)
-        
-        self.btn_solucion2 = QPushButton("siguiente Solución")
+
+        self.btn_solucion2 = QPushButton("Siguiente Solución")
         self.btn_solucion2.setObjectName("btn_solucion")
         self.btn_solucion2.clicked.connect(self.siguiente_solucion)
-        self.area_principal_layout.addWidget(self.btn_solucion2)
         self.btn_solucion2.setEnabled(False)
-        # Eventos
-       
-        
+
+        # Layout horizontal para los botones
+        botones_layout = QHBoxLayout()
+        botones_layout.addWidget(self.btn_confirmar_inicio)
+        botones_layout.addWidget(self.btn_solucion)
+        botones_layout.addWidget(self.btn_solucion2)
+
+        botones_widget = QWidget()
+        botones_widget.setLayout(botones_layout)
+        self.area_principal_layout.addWidget(botones_widget)
+
         # Conexiones
         self.btn_guardar.clicked.connect(self.guardar_laberinto)
         self.dibujar_laberinto()
@@ -167,19 +170,13 @@ class VentanaJuego(VentanaBase):
             self.cell_size = 30
             self.pen = QPen(QColor("#3498db"), 2)
             self.camino =self.laberinto.soluciones[Nsolucion]
-           
-            t = (Nsolucion % 20) / 19  
-            r = int(52 + (255 - 52) * t)         
-            g = int(152 * (1 - t))               
-            b = int(219 * (1 - t))              
-            color = QColor(r, g, b, 150)  
-                
+            
             for paso in range(len(self.camino)):
-                #time.sleep(0.5) 
+                       
                 i, j = self.camino[paso]
                 rect = self.scene.addRect(
                 j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size,
-                self.pen,color
+                self.pen,QColor(52, 152, 219, 100) # Rojo semitransparente
                 )
                 self.items_solucion.append(rect)
     """ detect WASD keys to move the player in the maze
@@ -241,4 +238,5 @@ class VentanaJuego(VentanaBase):
                 QMessageBox.information(self, "Guardado", "⚠️ El laberinto ya existe y no se guardó")
         else:
             QMessageBox.warning(self, "Error", "No hay laberinto para guardar")
+            
     

@@ -152,7 +152,7 @@ class VentanaJuego(VentanaBase):
             self.printearSolucion(0)            
         else:
             QMessageBox.warning(self, "Error", "¡No hay solución posible!")
-     """ draw the solution in the scene 
+    """ draw the solution in the scene 
         Args:
             Nsolucion(int): position in the list of the maze 
         Returns:

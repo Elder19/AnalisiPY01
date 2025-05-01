@@ -77,7 +77,7 @@ class matriz:
         fila_inicio, col_inicio = posicionO
         fila_final, col_final = posFinalO
         todos_los_caminos = []
-        Time=20
+        Time=30
         Inicio=time.time()
         if not (0 <= fila_inicio < self.filas and 0 <= col_inicio < self.columnas and
             0 <= fila_final < self.filas and 0 <= col_final < self.columnas):
@@ -122,9 +122,7 @@ class matriz:
                      solucionarMatriz2(fila+1,columna, camino, visitado)
                 if fila - 1 >= 0 and self.datos[fila - 1][columna] == 1 :
                     solucionarMatriz2(fila-1,columna, camino, visitado)
-                
-                
-       
+
             camino.pop()
             visitado.remove((fila, columna))
         solucionarMatriz2(fila_inicio, col_inicio, [], set())

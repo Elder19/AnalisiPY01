@@ -2,8 +2,16 @@ import os
 from PySide6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton)
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve
 
+
 class VentanaBase(QMainWindow):
-    """Clase base para VentanaJuego y VentanaResolucion"""
+    """Base class for VentanaJuego and VentanaResolucion"""
+    """ Initializes the base window with a title and minimum size.
+        Args:
+            parent (QWidget, optional): Parent widget. Defaults to None.
+            titulo (str, optional): Window title. Defaults to "Laberinto Mágico".
+        Returns:
+        Raises:
+        """
     def __init__(self, parent=None, titulo="Laberinto Mágico"):
         super().__init__(parent)
         self.setWindowTitle(titulo)
@@ -66,20 +74,37 @@ class VentanaBase(QMainWindow):
         self.cargar_estilos()
 
     def toggle_menu(self):
-        """Muestra/oculta el menú lateral"""
+        """ Shows/hides the side menu with an animation.
+        Args:
+        Returns:
+        Raises:
+        """
+
         width = self.menu_widget.width()
         self.menu_animation.setStartValue(width)
         self.menu_animation.setEndValue(200 if width == 0 else 0)
         self.menu_animation.start()
         
     def volver_inicio(self):
-        """Regresa a la ventana principal"""
+        """ Returns to the parent window if it exists and closes the current window.
+        Args:
+        Returns:
+        Raises:
+        """
+
         if self.parent():
             self.parent().show()
         self.close()
 
+
+    """ Loads CSS styles from an external file and applies them to the window.
+        Looks for the 'estilos.css' file in the same directory as the script.
+        Args:
+        Returns:
+        Raises:
+            FileNotFoundError: If the 'estilos.css' file is not found (handled internally with a print).
+        """
     def cargar_estilos(self):
-        """Carga los estilos CSS"""
         ruta_css = os.path.join(os.path.dirname(__file__), "estilos.css")
         try:
             with open(ruta_css, 'r') as f:
@@ -87,8 +112,14 @@ class VentanaBase(QMainWindow):
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo de estilos en {ruta_css}")
     
+    """ Changes the central widget of the main area of the window.
+        Removes the current central widget and replaces it with a new one.
+        Args:
+            nuevo_widget (QWidget): The new widget to be set as the main content.
+        Returns:
+        Raises:
+        """
     def cambiar_central_widget(self, nuevo_widget):
-        """Cambia el contenido de la ventana."""
         self.layout_principal.removeWidget(self.area_principal)  # quitas el viejo
         self.area_principal.deleteLater()  # destruyes el viejo widget
         self.area_principal = nuevo_widget

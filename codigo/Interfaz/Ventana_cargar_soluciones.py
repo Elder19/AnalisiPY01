@@ -8,7 +8,14 @@ from PySide6.QtWidgets import QGraphicsScene, QGraphicsView
 from Backend import JsonM as jm
 from Backend.matriz import matriz
 class VentanaCargarSoluciones(QMainWindow):
-    
+    """ Initializes the window for loading saved labyrinth solutions.
+        Loads available labyrinth data, sets up the UI including a graphics view
+        for displaying the labyrinth and navigation/action buttons.
+        Args:
+            parent (QWidget, optional): Parent widget. Defaults to None.
+        Returns:
+        Raises:
+        """
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Cargar Soluciones")
@@ -54,11 +61,26 @@ class VentanaCargarSoluciones(QMainWindow):
         # Añadimos el contenedor de botones al layout principal
         self.layout_principal.addWidget(self.contenedor_botones)
         self.cargar_laberinto(self.Contador)
+
+    """ Sets the currently displayed labyrinth as the active labyrinth in the parent window (if parent exists).
+        Closes the current window after setting the labyrinth.
+        Args:
+        Returns:
+        Raises:
+        """
     def guardar(self):
         if self.parent():
             self.parent().laberinto = self.laberinto
         self.close()   
-        
+    
+    """ Loads and displays a labyrinth from the loaded data based on its position.
+        Creates a dummy labyrinth matrix, loads data into it, and then draws it.
+        Args:
+            pos (int): The index position of the labyrinth data in the loaded list.
+        Returns:
+        Raises:
+            Exception: Catches and reports any exception that occurs during labyrinth loading (e.g., invalid data format).
+        """
     def cargar_laberinto(self,pos):
         try:
             self.laberinto = matriz(1, 1)  # Tamaño dummy
@@ -68,7 +90,14 @@ class VentanaCargarSoluciones(QMainWindow):
             self.dibujar_laberinto()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo cargar el laberinto:\n{str(e)}")
-            
+
+    """ Draws the current labyrinth matrix onto the QGraphicsScene.
+        Clears the scene and draws cells based on their type (wall or path),
+        adding a border around the entire labyrinth.
+        Args:
+        Returns:
+        Raises:
+        """ 
     def dibujar_laberinto(self):
         """Dibuja el laberinto en la escena"""
         self.scene.clear()
@@ -90,7 +119,13 @@ class VentanaCargarSoluciones(QMainWindow):
         pen = QPen(Qt.NoPen)
         
 
-       
+    """ Navigates to the next labyrinth in the loaded list.
+        Increments the counter and loads/displays the next labyrinth if available.
+        Displays a message box if at the end of the list.
+        Args:
+        Returns:
+        Raises:
+        """
     def avanzar_laberinto(self):
         if self.Contador >= len(self.laberintos) :
             QMessageBox.information(self, "Fin", "No hay más laberintos para cargar.")
@@ -99,6 +134,13 @@ class VentanaCargarSoluciones(QMainWindow):
             self.Contador += 1
             self.cargar_laberinto(self.Contador)
 
+    """ Navigates to the previous labyrinth in the loaded list.
+        Decrements the counter and loads/displays the previous labyrinth if available.
+        Displays a message box if at the beginning of the list.
+        Args:
+        Returns:
+        Raises:
+        """
     def retroceder_laberinto(self):
         if self.Contador >= len(self.laberintos) :
             QMessageBox.information(self, "Fin", "No hay más laberintos para cargar.")

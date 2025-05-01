@@ -12,6 +12,14 @@ from Ventana_cargar_soluciones import VentanaCargarSoluciones
 
 
 class VentanaLaberinto(QMainWindow):
+    """ Initializes the main labyrinth selection window.
+        Sets up the window title, size, central widget, layouts, and UI elements
+        like the main title, game/resolution buttons, size selection text,
+        size buttons, and the 'Load Solutions' button.
+        Args:
+        Returns:
+        Raises:
+        """
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Laberinto Mágico")
@@ -129,6 +137,13 @@ class VentanaLaberinto(QMainWindow):
         # Cargar estilos CSS
         self.cargar_estilos()
 
+    """ Loads CSS styles from an external file and applies them to the window.
+        Looks for the 'estilos.css' file in the same directory as the script.
+        Args:
+        Returns:
+        Raises:
+            FileNotFoundError: If the 'estilos.css' file is not found (handled internally with a print).
+        """
     def cargar_estilos(self):
         ruta_css = os.path.join(os.path.dirname(__file__), "estilos.css")
         try:
@@ -137,7 +152,12 @@ class VentanaLaberinto(QMainWindow):
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo de estilos en {ruta_css}")
             
-
+    """ Opens the game window if a labyrinth has been created.
+        Displays a warning message if no labyrinth has been selected yet.
+        Args:
+        Returns:
+        Raises:
+        """
     def iniciar_juego(self):
         if self.laberinto is None:
             QMessageBox.warning(self, "Advertencia", "Debes seleccionar una dimensión de laberinto antes de jugar.")
@@ -145,6 +165,12 @@ class VentanaLaberinto(QMainWindow):
         self.ventana_juego = VentanaJuego(laberinto=self.laberinto, parent=self)
         self.ventana_juego.showFullScreen()
 
+    """ Opens the resolution window if a labyrinth has been created.
+        Displays a warning message if no labyrinth has been selected yet.
+        Args:
+        Returns:
+        Raises:
+        """
     def mostrar_resolucion(self):
         if self.laberinto is None:
             QMessageBox.warning(self, "Advertencia", "Debes seleccionar una dimensión de laberinto antes de jugar.")
@@ -152,13 +178,36 @@ class VentanaLaberinto(QMainWindow):
         self.ventana_resolucion = VentanaResolucion(laberinto=self.laberinto, parent=self)
         self.ventana_resolucion.showFullScreen()
 
+    """ Creates a new labyrinth matrix with the specified dimensions.
+        Assigns the newly created labyrinth to the self.laberinto attribute.
+        Args:
+            fila (int): The number of rows for the labyrinth.
+            columna (int): The number of columns for the labyrinth.
+        Returns:
+        Raises:
+        """
     def crearLAB(self, fila, columna):
         print("Creando laberinto de tamaño:", fila, "x", columna)
         self.laberinto = matriz(fila, columna)
 
+    """ Handles the close event of the window.
+        Exits the application when the window is closed.
+        Args:
+            event (QCloseEvent): The close event object.
+        Returns:
+        Raises:
+        """
     def closeEvent(self, event):
         QApplication.quit()
 
+    """ Handles key press events for the window.
+        Specifically, it prompts the user to confirm if they want to exit
+        when the Escape key is pressed.
+        Args:
+            event (QKeyEvent): The key event object.
+        Returns:
+        Raises:
+        """
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape:
             respuesta = QMessageBox.question(
@@ -168,6 +217,12 @@ class VentanaLaberinto(QMainWindow):
             if respuesta == QMessageBox.Yes:
                 self.close()
 
+    """ Opens the 'Load Solutions' window.
+        Creates an instance of VentanaCargarSoluciones and displays it.
+        Args:
+        Returns:
+        Raises:
+        """
     def mostrar_cargar_soluciones(self):
         self.ventana_cargar = VentanaCargarSoluciones(self)
         self.ventana_cargar.show()

@@ -64,6 +64,7 @@ class VentanaJuego(VentanaBase):
         """
     
     def iniciar_movimiento(self):
+        self.laberinto.soluciones = []
         self.trail_items.clear()
         self.dibujar_laberinto()
         self.inicio =self.laberinto.puntoFInal()

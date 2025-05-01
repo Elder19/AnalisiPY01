@@ -101,8 +101,8 @@ class matriz:
             false if the positions are ivalid or exceeds margin matrix  
         """
         def solucionarMatriz2(fila_inicio ,col_inicio,camino,visitado):
-           # if len(todos_los_caminos) >=10:
-                #return
+            if len(todos_los_caminos) >=20:
+                return
             fila, columna = fila_inicio, col_inicio
             if time.time()-Inicio  > Time:
                 return

@@ -154,14 +154,20 @@ class VentanaResolucion(VentanaBase):
             # Dibujar solución
             self.cell_size = 30
             self.pen = QPen(QColor("#3498db"), 2)
-            self.camino =self.laberinto.soluciones[Nsolucion]
             
+            self.camino =self.laberinto.soluciones[Nsolucion]
+            t = (Nsolucion % 20) / 19  
+            r = int(52 + (255 - 52) * t)         
+            g = int(152 * (1 - t))               
+            b = int(219 * (1 - t))              
+            color = QColor(r, g, b, 150)  
+                
             for paso in range(len(self.camino)):
                 #time.sleep(0.5) 
                 i, j = self.camino[paso]
                 rect = self.scene.addRect(
                 j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size,
-                self.pen,QColor(52, 152, 219, 100) # Rojo semitransparente
+                self.pen,color
                 )
                 self.items_solucion.append(rect)
               
